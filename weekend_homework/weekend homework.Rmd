@@ -1,0 +1,193 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+2.2.1 MULTIPLY number by 15 and add 4 to give output
+
+```{r}
+## Set z to number 4 and y to number 3 and wrote if code that states if y is greater than or equal to 0, then the number will be multiplied by 15 and then 4 will bw added on
+
+z <- 4
+
+y <- 1
+
+if (y >= 0) {
+  y * 15 + z
+}
+    
+
+
+```
+
+
+
+2.2.1 Write a function tht returns "bird, if the input is goose, duck or pigeon and returns not burd for everythign else
+
+```{r}
+## this iwll multiply and number greater than 0 by 10, if 0 or any negative number is input this will pull message
+
+y <- 0
+
+
+if (y > 0) {
+  y * 10
+} else
+  print("invalid input")
+
+```
+
+
+
+
+```{r}
+
+my_animals <- c("goose", "duck", "Pigeon")
+
+## created a vector for the equired animals that are to return the bird statement
+
+if("goose" %in% my_animals){
+  print("bird") 
+  ## if goose is input or any of the animals in the vector above this condition will be met and bird will be printed
+} else {
+    print("not a bird")
+  ## anything else outside the vector wil meed this condition and return not a bird
+}
+
+```
+
+
+2.2.3 write a function that muliplies all numbers by 10, if the input isnt a number the functiton should return "invalid input"
+
+## there will be a loop needed.
+
+
+```{r}
+
+library(dplyr)
+
+```
+
+
+2.3.1 for the vector below, make a new vector which is equal to "big" everytime the element of sizes is greater than 10 and equal to "small" everytime the element of sizes is less than or equal to 10
+
+```{r}
+
+## this turns the numerical vector into a logical one
+
+sizes <- c(13, 15, 16, 8, 22) 
+
+sizes <= 10
+
+```
+
+## this code has brought back the ones that are big and any lower than or equal to 10 are small
+
+```{r}
+
+ifelse(sizes <= 10, "Small", "Big")
+
+```
+
+
+2.3.2 For the vector below convert: apple - alpaca, banana- bonobo, cherry - chipmunk
+
+```{r}
+## this recode funtion has amended the parts of the vectors to alternate words
+
+my_fruit <- as.factor(c("apple", "apple", "banana", "cherry", "cherry"))
+
+dplyr::recode(my_fruit, "apple" = "alpaca", "banana" = "bonono", "cherry" = "chipmunk")
+
+```
+
+
+2.3.3 the two vectors below show the ages at marriage of each member of a couple, the first element  of each vector corresponds to the first couple, the second elements to the second couple 
+
+creat a new vector which is equal to 
+
+"Wife older" whenever the wifes ages is the highest. "Husband older" when the husbands age is the highest, "Same age" when they are the same age
+
+
+```{r}
+## this is the vecots creasted for husband age and wife age
+
+wife_age <- c(29L, 30L, 36L, 31L, 22L)
+
+husband_age <- c(28L, 35L, 32L, 31L, 29L)
+
+```
+
+
+```{r}
+
+case_when(
+  wife_age %% max(wife_age) == 0 ~ "Wife oldest",
+  ## this brings back the wife oldest at the oldest point
+  husband_age %% max(husband_age) == 0 ~ "husband oldest",
+  ## this returns the husband oldest at oldest ages
+  husband_age %% wife_age == 0 ~ "same", 
+  ## this gives the same
+  TRUE ~ " - "
+  ## True is used to replace the final N/a, left with blank qoutation
+)
+  
+```
+
+2.4.1 Use a loop to print out every element of my_ist  which is type character 
+
+
+```{r}
+
+## created an apple as character function to pull the characte part of the list
+
+apple <- as.character("apple")
+
+my_list <- list(
+  4,
+  "apple",
+  10.5,
+  c("is", "an", "apple"),
+  "apple",
+  c("i", "like", "apples"),
+  8
+)
+
+
+```
+
+
+
+```{r}
+
+for (apple in my_list) {
+  phrase <- paste(apple, "is an apple",  "i like apples", sep = " ")
+print(phrase)
+}
+```
+
+
+```{r}
+
+length_list <- length(apple)
+
+```
+
+
+```{r}
+
+##vector created for the for loop
+
+
+for (i in length_list) {
+  phrase <- paste("is an ", "i like apples", length_list [i])
+  print(phrase)
+}
+
+##the for loop allow the code to join the vectors together by length
+
+```
+
+
+
