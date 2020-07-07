@@ -1,0 +1,122 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+library(RPostgreSQL)
+
+```
+
+
+```{r}
+
+home_location <- Sys.getenv("HOME")
+credentials_location <- paste0(home_location,"/credentials.R")
+source(credentials_location)
+
+```
+
+
+Create a connection to the local wrestling database from R.
+Pass the argument max.con = 2 to PostgreSQL() to make sure you don’t have too many simultaneous connections. We’ll be setting up a local connection and perhaps a remote connection, hence ‘2’.
+Remember to add a separate ‘disconnect’ block of code. We’ll write queries between the ‘connect’ and ‘disconnect’ blocks.
+
+
+```{r}
+## This will seed the database TO r
+
+db_connect_2 <- dbConnect(drv = PostgreSQL(max.con = 2), user = postgresql_username, password = postgresql_password, dbname = 'wrestling', host = 'localhost')
+
+```
+
+Using the R connection you just created, write and execute a SQL query to return all the wrestlers in the wrestlers table.
+
+
+```{r}
+dbListTables(conn = db_connect_2)
+
+```
+
+```{r}
+## this provides the fields that are in the table so to know which colunn to call in the next code
+dbListFields(conn = db_connect_2, name = "wrestlers")
+```
+
+
+```{r}
+
+## this will pull all the details in the table
+
+wrestlers <- dbGetQuery(conn = db_connect_2, statement = "SELECT * FROM wrestlers")
+
+wrestlers
+
+```
+
+
+Explore the columns stored in the table. State which data type you think each column stores.
+
+
+id = INT, born = VARCHAR, name- VARCHAR, gender- VARCHAR, win_percentage- REAL, total_matches- INT, 
+
+
+```{r}
+dbDisconnect(conn = db_connect_2)
+
+
+```
+
+
+Now we’ll try to connect to a remote PostgreSQL database holding the same data. As earlier, this connection may or may not work, depending on how many other connections to the server are currently active. But try a few times, and don’t worry if it proves difficult. Being able to write the connection code is what we’re looking for here!
+
+Here are the details of the remote PostgreSQL database we wish to connect to:
+
+
+  
+
+```{r}
+##this will course in the credential location
+
+source(credentials_location)
+
+```
+
+
+```{r}
+
+## this is the ocde to pull the database from the rmote location
+
+db_connect <- dbConnect(drv = PostgreSQL(max.con = 2), user = remote_wrestling_postgresql_username, password = remote_wrestling_postgresql_password, dbname='mvhbdgdk', host='34.245.37.126')
+
+```
+
+
+```{r}
+db_connect
+
+```
+
+Using this R connection, write and execute a query to return all the wrestlers from the wrestlers table
+
+```{r}
+## This code pulls the database information from the relevant remote connection
+
+result <- dbGetQuery(conn = db_connect, statement = "SELECT * FROM wrestlers")
+result
+
+```
+
+
+```{r}
+## this will disconnest the current remote connection
+
+dbDisconnect(conn = db_connect)
+
+```
+
+
+
+
