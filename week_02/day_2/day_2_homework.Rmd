@@ -26,9 +26,9 @@ Remember to add a separate ‘disconnect’ block of code. We’ll write queries
 
 
 ```{r}
-## This will seed the database TO r
+## This will seed the database to database
 
-db_connect_2 <- dbConnect(drv = PostgreSQL(max.con = 2), user = postgresql_username, password = postgresql_password, dbname = 'wrestling', host = 'localhost')
+db_connect_2 <- dbConnect(drv = PostgreSQL(max.con = 2), user = postgresql_username, password = postgresql_password, dbname = "wrestling", host = "localhost")
 
 ```
 
