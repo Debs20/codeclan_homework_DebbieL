@@ -64,13 +64,14 @@ Count the number of employees based in either Portugal or Spain.
 ```{sql connection=db_connect}
 -- this will pull the bumber of employees in Portugal
 
-SELECT * 
+SELECT 
+  COUNT(id) 
 FROM employees 
 WHERE country IN ('Spain', 'Portugal')
 
 ```
 
-Count the number of pay_details records lacking a local_account_no
+Count the number of pay_details records lacking a local_account_no 
 
 
 ```{sql connection=db_connect}
@@ -82,12 +83,14 @@ WHERE local_account_no IS NULL
 
 ```
 
-
+Are there any pay details record lacking both account 
 
 ```{sql connection=db_connect}
 
-SELECT *
+SELECT 
+  COUNT(id)
 FROM pay_details
+WHERE local_account_no is NULL
 
 ```
 
@@ -107,10 +110,9 @@ Are there any pay_details record lacking both a local_account_no and iban number
 -- This will show the N/A's on the local account, still need to pull iban too
 
 SELECT 
-  local_account_no, 
-  iban
+  COUNT(id)
 FROM pay_details
-WHERE local_account_no iS NULL
+WHERE local_account_no iS NULL and Iban IS NULL
 
 ```
 
@@ -136,14 +138,12 @@ Get a list of employees first names, last names and countries, ordered alphabeti
 
 -- this will show employees ordered alphabetically by country first
 
--- need to work out how to get ordered by last name next as can only get this from z- a
-
 SELECT 
   first_name,
   last_name,
   country
 FROM employees
-ORDER BY country ASC NULLS LAST, last_name DESC NULLS LAST
+ORDER BY country, last_name ASC NULLS LAST
 
 ```
 
@@ -186,7 +186,8 @@ How many employees have a first name beginning with ‘F’?
 
 -- This brings back all employees with surname startying f
 
-SELECT *
+SELECT 
+  COUNT(id)
 FROM employees
 WHERE first_name LIKE '%F%'
 
@@ -198,7 +199,7 @@ Find all the details of any employees with a ‘yahoo’ e-mail address?
 
 SELECT *
 FROM employees
-WHERE email IN ('yah%')
+WHERE email LIKE ('%yahoo%')
 
 ```
 
@@ -212,7 +213,7 @@ Count the number of pension enrolled employees not based in either France or Ger
 SELECT
   COUNT(id) AS pens_enrolled
 FROM employees 
-WHERE (pension_enrol = TRUE) AND (country != 'French' OR country != 'Germany')
+WHERE pension_enrol = TRUE AND country NOT IN ('France', 'Germany')
 ```
 
 Breakdown the numbers of employees enrolled, not enrolled and whose enrollment status is unknown in the corporation pension scheme.
@@ -252,7 +253,10 @@ GROUP BY department
 ```
 
 
+
 ```{sql connection=db_connect}
+
+
 
 ```
 
