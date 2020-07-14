@@ -70,13 +70,13 @@ Bit Harder] Do a breakdown of the number of employees per team (here we want two
 ```{sql connection=db_connect_3}
 
 SELECT 
-  first_name,
-  last_name, 
-  
-  COUNT(*) 
-FROM employees AS e
-LEFT JOIN teams AS t
+  t.name AS team_name,
+  COUNT(e.id) AS num_employees 
+FROM teams AS t
+LEFT JOIN employees AS e
 ON e.team_id = t.id
+GROUP BY t.name
+ORDER BY num_employees DESC
 
 ```
 
@@ -90,7 +90,7 @@ ON e.team_id = t.id
 SELECT 
   *
 FROM employees
-WHERE email NOT LIKE '%_@_%.__%' 
+WHERE email NOT LIKE '%@%' OR email IS NULL
 ```
 
 
