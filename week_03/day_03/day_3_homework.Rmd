@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(outliers)
+```
+
+
+1. Load the code_clan_tweets.csv data. Find the number of rows, columns, and list all the variable names.
+
+```{r}
+cc_tweets <- read_csv("data/code_clan_tweets.csv")
+
+```
+
+
+```{r}
+dim(cc_tweets)
+
+names(cc_tweets)
+
+head(cc_tweets)
+
+view(cc_tweets)
+```
+
+2. First, we’re going to summarise the number of likes (favorite_count) CodeClan tweets have. Create a boxplot to check for outliers.
+
+```{r}
+ggplot(cc_tweets, aes(x = "cc_tweets", y = "favourite_count")) +
+  geom_boxplot() + ylab('favourite_count \n') +  xlab("\n cc tweets")
+
+```
+
+
+
+
+3. Find the total number of favourited tweets (stored in favorite_count) that CodeClan tweets have got. Don’t add a tweet’s favorite_count to the total when the tweet was quoted (see the is_quote variable).
+
+
+
+
+Summarise the mean number of retweets (retweet_count), split by the type of platform that was used to tweet (source). Again, omit quoted tweets from the mean.
+
+```{r}
+summary(cc_tweets$retweet_count)
+
+```
+
+```{r}
+
+cc_tweets %>%
+  group_by(retweet_count) %>%
+  summarise(n = n(), average = mean(retweet_count))
+            
+
+```
+
+```{r}
+
+retweet_data_mean <- cc_tweets %>%
+  summarise(count = sum(retweet_count))
+retweet_data_mean
+
+```
+
+
+
+4. Count the total number of likes (i.e. total of favorite_count), split by media type, and arrange them from most likes to least. Assume that any tweets without a listed media type are of type “text”.
+
+
+
+5. Find the mean number of characters that a CodeClan tweet contains.
+
+
+
+6. The code_clan_info.csv data file contains status_url along with other info. Load this in, and join it to the code_clan_tweets tibble, so that you have a status_url for each tweet. Decide which variable to join the tibbles on.
+
+```{r}
+codeclan_info <- read_csv("data/code_clan_info.csv")
+
+```
+
+
+```{r}
+inner_join(cc_tweets, codeclan_info, "tweet_id")
+
+```
+
+
+7. From your new joined data, create a new tibble codeclan_hashtags containing only the tweet_id and hashtags in lowercase for analysis. Keep only those tweets with hashtags.

@@ -96,6 +96,12 @@ Hint Use the pivot_longer() function to create a new description column, which w
 
 ```{r}
 
+all_descriptions <- face_desc_coded %>%
+  pivot_longer(cols = starts_with("d"),
+               names_to = "description_number",
+               values_to = "description")
+
+all_descriptions
 
 ```
 
@@ -108,6 +114,12 @@ Hint Hint: look back at the previous sections where we dealt with null values (i
 
 ```{r}
 
+tidy_description <- all_descriptions %>%
+  filter(!is.na(description),
+         nchar(description) > 1)
+
+tidy_description
+
 
 ```
 
@@ -119,6 +131,9 @@ Group the data by description, and summarise the data by generating a count for 
 
 ```{r}
 
+grouped_faces <- tidy_description %>%
+  group_by(description)
+head(description)
 
 ```
 
