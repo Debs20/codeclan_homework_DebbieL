@@ -1,0 +1,133 @@
+---
+title: "R Notebook"
+output: 
+  html_notebook: 
+    fig_height: 5
+    fig_width: 8
+editor_options: 
+  chunk_output_type: inline
+---
+
+In all plots you make, ensure your labels are appropriate. You also must write down a short summary of what each plot tells you in order to meet MVP.
+
+Q1. 
+
+```{r}
+
+library(CodeClanData)
+library(ggplot2)
+
+```
+
+```{r}
+backpack
+
+```
+
+
+```{r}
+# This gives the dimesnsions and names of this dataset
+dim(backpack)
+names(backpack)
+
+```
+
+Q2. 
+What is the distribution of backpack weights that students are carrying? Choose an appropriate graph to show the distribution.
+
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, fill = body_weight), position = "dodge") +
+  scale_fill_brewer()
+
+```
+
+This graph shows that most students carried between 5 -10 (LBS) in backpack_weight
+
+Q3. Are there differences in backpack weight between sex?
+
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, fill = sex)) +
+  scale_fill_brewer(palette = 7) +
+  labs(
+    x = " Backpack Weight",
+    y = " Count",
+    fill= "Sex"
+  )
+  
+
+```
+
+This graph shows that more females carried 5-10 (lbs) of backpack weight than males, 
+
+
+q4. What is the relationship between body weight and backpack weight?
+
+
+```{r}
+ggplot(backpack) +
+  geom_jitter(aes(x = backpack_weight, y = body_weight), colour = "blue", height = 5, width = 10)
+
+```
+
+
+
+
+Q.5 Is this relationship different between men and women? Choose an appropriate plot and interpret your findings.
+
+```{r}
+ggplot(backpack) +
+  geom_line(aes(x = body_weight, y = backpack_weight, colour = sex)) 
+  
+
+```
+
+The relationship between body weight and back_pack weight shows that in females in the smaller body weight -110-170 carried more bags beiween 10-20 or over. The males were between 150-200 in body weight
+
+Q6. What proportion of students report back pain?
+
+```{r}
+ggplot(backpack) +
+  geom_col(aes(x = year, y = back_problems), fill = "Light Green")
+
+```
+
+This graph shows that the proportion of year 3 students reported back pain, which means that younger and older students did not have as many problems
+
+Q8 Is this proportion different between men and women?
+
+```{r}
+ggplot(backpack) +
+  geom_col(aes(x = year, y = back_problems, fill = sex))
+
+```
+
+Again this graph shows that year 3 female students had more back problems than males. its also shows that for year 2 and year 6 only females had back problems, so the largest proportion of students with back problems were female
+
+Q9. Now you’ve investigated your data separately, create plots to describe the relationship between backpack weight, body weight, gender and reported backpain. Try both backpack_weight and body_weight as well as the ratio.
+
+
+
+```{r}
+
+ggplot(backpack) +
+  geom_histogram(aes(x = body_weight, fill = sex), col = "white") +
+  facet_grid(back_problems ~ sex)
+
+```
+ 
+This graph shows the females and males that did and didn't have back problems, and their body weight
+
+```{r}
+
+ggplot(backpack) +
+  geom_histogram(aes(x = backpack_weight, fill = sex), col = "white") +
+  facet_grid(back_problems ~ sex)
+
+
+```
+
+
+This graph shows the females and males that did and didn't have back problems, and their backpack weight
+
