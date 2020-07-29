@@ -1,0 +1,126 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(ggplot2)
+library(CodeClanData)
+library(CodeClanData)
+library(tidyverse)
+library(ggthemes)
+library(viridis)
+```
+
+COMPARISON
+
+Create a suitable plot for the following three datasets:
+
+
+```{r}
+
+late_deliveries
+```
+
+```{r}
+ggplot(late_deliveries) +
+ aes(x = date, y = late_deliveries, fill = late_deliveries, bins = 20) +
+  geom_col(position = "dodge") +
+  scale_fill_distiller(palette = "Pastel2") +
+  theme_bw() + 
+  labs(
+    x = "Date",
+    y = "late deliveries",
+    title = "Late Deliveries"
+  ) +  
+  theme(title = element_text(size = 16, face = "italic", colour = "Blue"))
+
+```
+
+
+```{r}
+
+recovery_times
+```
+
+```{r}
+ggplot(recovery_times) +
+  aes(x = recovery, y = prognosis, fill = treatment_group) + 
+  geom_col(position = "dodge") +
+  scale_fill_hue(h = c(120,300), c = 40, l = 45) +
+  theme_classic(11) +
+  labs(
+    x = "Recovery",
+    y = "Prognosis",
+    title = "Recovery Times"
+  ) +
+  theme(
+    title = element_text(size = 15, face = "bold", colour = "blue"),
+    panel.background = element_rect(fill = "Pink"), 
+    panel.grid = element_blank(),
+    plot.title = element_text(size = 15, face = "bold", colour = "blue")
+  )
+  
+
+```
+
+
+
+```{r}
+fitness_levels
+```
+
+
+```{r}
+
+ggplot(fitness_levels) + 
+  aes(x = age, y = fitness_score, colour = group) +
+  geom_line() +
+  theme_light() + 
+  facet_wrap(~ group, ncol = 10, scales = "free") +
+  scale_color_gradient2_tableau()
+
+
+```
+
+CONNECTION
+
+```{r}
+ggplot(blood_pressure) +
+  aes(x = systolic_blood_pressure_mm_hg, y = daily_saturated_fat_intake_mg, colour = daily_saturated_fat_intake_mg) +
+  geom_point() +
+  scale_colour_gradient2(low = "blue", high = "red", mid = "white", midpoint = 15) +
+  labs(
+    x = "Sys Blood Pre",
+    y = "Daily fat intake (mg)",
+    title = "Blood Pressue",
+    subtitle = "fat Intake (mg)"
+  ) + 
+  theme_light()
+```
+
+
+
+```{r}
+car_use
+```
+
+
+```{r}
+ggplot(car_use) +
+  aes(x = city, y = population, colour = car_use_percent) +
+  geom_point() +
+  scale_color_distiller(palette = "PuOr") +
+  theme_dark() +
+  labs(
+    title = "Car Use", 
+    subtitle = "Car use"
+  )
+  
+  
+
+```
+
+
+DISTRIBUTION

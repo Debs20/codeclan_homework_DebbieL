@@ -95,17 +95,17 @@ ggplot(backpack) +
 
 This graph shows that the proportion of year 3 students reported back pain, which means that younger and older students did not have as many problems
 
-Q8 Is this proportion different between men and women?
+Q7 Is this proportion different between men and women?
 
 ```{r}
 ggplot(backpack) +
   geom_col(aes(x = year, y = back_problems, fill = sex))
 
 ```
-
+  
 Again this graph shows that year 3 female students had more back problems than males. its also shows that for year 2 and year 6 only females had back problems, so the largest proportion of students with back problems were female
 
-Q9. Now you’ve investigated your data separately, create plots to describe the relationship between backpack weight, body weight, gender and reported backpain. Try both backpack_weight and body_weight as well as the ratio.
+Q8. Now you’ve investigated your data separately, create plots to describe the relationship between backpack weight, body weight, gender and reported backpain. Try both backpack_weight and body_weight as well as the ratio.
 
 
 
