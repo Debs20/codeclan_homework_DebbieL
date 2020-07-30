@@ -23,6 +23,8 @@ Create a suitable plot for the following three datasets:
 late_deliveries
 ```
 
+Late Deliveries
+
 ```{r}
 ggplot(late_deliveries) +
  aes(x = date, y = late_deliveries, fill = late_deliveries, bins = 20) +
@@ -38,11 +40,26 @@ ggplot(late_deliveries) +
 
 ```
 
+solution 2
+
+```{r}
+
+ggplot(late_deliveries) +
+  aes(x = date, y = late_deliveries) +
+  geom_line() + 
+  geom_point() + 
+  labs(x = "year", y = "number of late deliveries") + 
+  theme_minimal()
+
+```
+
+Recovery time
 
 ```{r}
 
 recovery_times
 ```
+
 
 ```{r}
 ggplot(recovery_times) +
@@ -65,8 +82,20 @@ ggplot(recovery_times) +
 
 ```
 
+solution 2
+
+```{r}
+ggplot(recovery_times) +
+  aes(x = treatment_group, y = recovery, fill = prognosis) +
+  geom_col(position = "dodge") + 
+  labs(x = "\n Treatment Group", y = "Recovery time (months) \n") + 
+    scale_fill_colorblind()
 
 
+```
+
+ Fitness Level
+ 
 ```{r}
 fitness_levels
 ```
@@ -84,7 +113,24 @@ ggplot(fitness_levels) +
 
 ```
 
+Solution 2
+
+```{r}
+ggplot(fitness_levels) +
+  aes(x = age, y = fitness_score, group = child, color = child) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ group, ncol = 5) + 
+  labs(y = "fitness score \n", x = "\n age (years)", title = "Individual child fitness score by Group") + 
+  scale_colour_hue(guide = guide_legend(nrow = 10, byrow = TRUE))
+
+```
+
+
+
 CONNECTION
+
+Blood Pressure
 
 ```{r}
 ggplot(blood_pressure) +
@@ -100,11 +146,24 @@ ggplot(blood_pressure) +
   theme_light()
 ```
 
+Solution 2
 
+```{r}
+ggplot(blood_pressure) +
+  aes(
+    x = daily_saturated_fat_intake_mg,
+    y = systolic_blood_pressure_mm_hg
+  ) +
+  geom_point() + 
+  labs(x = "daily fat intake (mg)", y = "systolic blood pressure (mmHg)")
+```
+
+Car use
 
 ```{r}
 car_use
 ```
+
 
 
 ```{r}
@@ -122,5 +181,246 @@ ggplot(car_use) +
 
 ```
 
+solution 2
+
+```{r}
+ggplot(car_use) +
+  aes(
+    x = car_use_percent,
+    y = air_so2_concentration_ppm,
+    size = population
+  ) +
+  geom_point(alpha = 0.5) + 
+  labs(x = "car use (%)", y = "air CO2 concentration (ppm)")
+
+```
+
 
 DISTRIBUTION
+
+D20 Outcome
+
+```{r}
+ggplot(d20_outcomes) +
+  aes(x = outcome) +
+  geom_histogram(bins = 20, col = "white") 
+
+```
+solution 2
+
+```{r}
+ggplot(d20_outcomes) +
+  aes(x = outcome) +
+  geom_density()
+
+```
+
+
+
+COMPOSITION
+
+Pension Surplus
+
+```{r}
+ggplot(pension_surplus) +
+  aes(x = item, y = balance, fill = balance > 0) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  coord_flip() 
+
+```
+
+
+Pension Liabilities
+
+```{r}
+ggplot(pension_liabilities) +
+  aes(x = year, y = liability_millions, fill = liability_type) +
+  geom_col() + 
+  scale_fill_colorblind()
+
+```
+
+
+Homework part 1
+
+```{r}
+library(ggplot2)
+library(CodeClanData)
+library(dplyr)
+
+```
+
+
+1. Take the data in the dataset qb_revenue_breakdown and make a stacked bar chart showing the sources of revenue across the two years in the dataset.
+
+```{r}
+ggplot(qb_revenue_breakdown) +
+  aes(x = Year, y = Revenue, fill = Product) +
+  geom_col()
+
+```
+
+2. Make a line chart showing monthly sales of the “flagship product” - the KwikBit Unit1 - over the last year. This data is inside qb_monthly_sales, but you will need to use subset.
+
+```{r}
+
+kwikbit_sales <- subset(qb_monthly_sales, Cashflow == "Kwikbit Unit 1 Sales")
+
+ggplot(kwikbit_sales) +
+  aes(x = Date, y = Amount) +
+  geom_line() 
+```
+
+3. Make a line chart showing monthly revenue and costs over the last year. This data is also in qb_monthly_sales.
+
+```{r}
+revenue_and_costs <- subset(qb_monthly_sales, Cashflow != "Kwikbit Unit 1 Sales")
+
+ggplot(revenue_and_costs) +
+  aes(x = Date, y = Amount, colour = Cashflow) +
+  geom_line()
+
+```
+
+
+4. Show annual sales of personal fitness trackers over the last 5 years broken down by company as a ribbon plot (use geom_area). This data is in qb_competitors.
+
+```{r}
+ggplot(qb_competitors) +
+  aes(x = Year, y = Revenue, fill = Company) +
+  geom_area() 
+
+```
+
+
+
+5. Now show the sales from the 5 competitors as a line graph. Include an extra layer that shows the data points used to make the lines.
+
+```{r}
+ggplot(qb_competitors) +
+  aes(x = Year, y = Revenue, colour = Company) +
+  geom_line() +
+  geom_point()
+
+```
+
+6. Now the company wants to compare the number of steps that their device counts vs. their competitors. Make a line graph of the number of steps throughout time, and use faceting to compare between individuals and people. Data is in qb_device_data.
+
+```{r}
+qb_device_data <- 
+mutate(qb_device_data, decimal_hour = hours + (mins/60))
+
+ggplot(qb_device_data) +
+  aes(x = decimal_hour, y = counts) +
+  geom_line() + 
+  facet_grid(id ~ device)
+
+```
+
+
+Take the plots that you produced in part one and now polish them by:
+
+Adding appropriate labels
+Changing the scales and coordinates when appropriate.
+Applying a unified theme, which is described below:
+Graphs should have white backgrounds, and use colour sparingly.
+There should be faint grid lines.
+Font sizes should be ~12pt although titles should be slightly larger and axis labels can be slightly smaller.
+All plots should use colours from the following company colour scheme.
+
+
+```{r}
+col_scheme <- c("#E89FE9", "#50434F", "#B6A7B5", "#F9A472", "#BD7040")
+theme_qb <- 
+  theme(
+    text = element_text(size = 12),
+    title = element_text(size = 14),
+    axis.text = element_text(size = 10),
+    panel.background = element_rect(fill = "white"),
+    panel.grid = element_line(colour = "grey90", linetype = "dashed")
+  )
+ggplot(qb_revenue_breakdown) +
+  aes(x = Year, y = Revenue, fill = Product) +
+  geom_col() +
+  scale_fill_manual(values = col_scheme) +
+  ggtitle(
+    "Breakdown of QikBit Revenue by Product Line",
+    subtitle =  "2018 and 2019"
+  ) +
+  theme_qb
+```
+
+```{r}
+
+kwikbit_sales <- subset(qb_monthly_sales, Cashflow == "Kwikbit Unit 1 Sales")
+
+ggplot(kwikbit_sales) +
+  aes(x = Date, y = Amount, group = Cashflow) +
+  geom_line(size = 2, colour = col_scheme[3]) +
+  theme_qb +
+  scale_y_continuous("Sales", labels = scales::dollar_format(prefix = "£")) +
+  ggtitle("Sales of Kwikbit Unit1", subtitle = "1 Aug 2018 to 1 July 2019")
+
+```
+
+
+```{r}
+revenue_and_costs <- subset(qb_monthly_sales, Cashflow != "Kwikbit Unit 1 Sales")
+
+ggplot(revenue_and_costs) +
+  aes(x = Date, y = Amount, colour = Cashflow, group = Cashflow) +
+  geom_line(size = 2) +
+  theme_qb +
+  scale_colour_manual(values = col_scheme) +
+  scale_y_continuous("Sales", labels = scales::dollar_format(prefix = "£")) +
+  ggtitle("QikBit - Revenue and Costs", subtitle = "1 Aug 2018 to 1 July 2019")
+
+```
+
+
+
+```{r}
+ggplot(qb_competitors) +
+  aes(x = Year, y = Revenue, fill = Company) +
+  geom_area() +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_qb +
+  scale_fill_manual(values = col_scheme) +
+  ggtitle(
+    "Revenue in the Fitness Tracker Market by Company",
+    subtitle = "2015 - 2019"
+  )
+
+```
+
+
+```{r}
+ggplot(qb_competitors) +
+  aes(x = Year, y = Revenue, colour = Company) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_qb +
+  scale_colour_manual(values = col_scheme) +
+  ggtitle(
+    "Revenue in the Fitness Tracker Market by Company",
+    subtitle = "2015 - 2019"
+  )
+
+```
+
+
+```{r}
+ggplot(qb_device_data) +
+  aes(x = decimal_hour, y = counts, colour = device) +
+  geom_line() + 
+  scale_x_continuous("Time (hours)") +
+  scale_y_continuous("Steps") +
+  facet_grid(id ~ device) +
+  scale_colour_manual(values = col_scheme) +
+  theme_qb +
+  ggtitle("Comparison between KwikBit Unit1 and Competitors for 5 individuals")
+
+```
+
