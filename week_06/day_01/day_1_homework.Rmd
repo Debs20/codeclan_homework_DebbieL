@@ -1,0 +1,412 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(prob)
+library(tidyverse)
+library(gtools)
+library(dplyr)
+```
+
+
+
+Titanic Survivors
+
+You will need to:
+
+Calculate probabilities prob( survived ∩ crew ) and prob( survived ∩ passenger ).
+Use these to calculate conditional probabilities prob( survived ∣ crew ) and prob( survived ∣ passenger ).
+Use the conditional probabilities to say whether crew or passengers were more likely to have survived the disaster.
+Feel free to do this with pen and paper, if you prefer!
+
+
+```{r}
+
+titanic_tibble <- tibble(passenger = c(488, 812),
+                        crew = c(215, 703))
+
+titanic_tibble <- titanic_tibble %>%
+    mutate(total_deaths = rowSums(.), 
+           status = c("survived", "died")) %>%
+  select(status, passenger, crew, total_deaths )
+
+titanic_tibble 
+
+```
+
+how many people i total 
+
+```{r}
+
+total <- titanic_tibble %>%
+summarise(total_value = sum(total_deaths))
+
+total_titanic <- 2218
+
+```
+
+Crew probability -
+
+```{r}
+prob_crew <- titanic_tibble %>%
+  summarise(total_crew = sum(crew)) %>%
+    mutate(prob = total_crew / total_titanic) %>%
+  select(prob)
+
+```
+
+passenger probability
+
+```{r}
+
+prob_passenger <- titanic_tibble %>%
+  summarise(total_passenger = sum(passenger)) %>%
+    mutate(prob = total_passenger / total_titanic) %>%
+  select(prob)
+```
+
+joint possibility
+
+```{r}
+
+prob_crew_and_survived <- titanic_tibble %>%
+  select(status, crew) %>%
+  filter(status == "survived") %>%
+  mutate(prob = crew / total_titanic) %>%
+  select(prob)
+
+
+prob_passenger_and_survived <- titanic_tibble %>%
+  select(status, passenger) %>%
+  filter(status == "survived") %>%
+  mutate(prob = passenger / total_titanic) %>%
+  select(prob)
+```
+
+conditional probability
+
+```{r}
+
+prob_survived_given_crew <- prob_crew_and_survived / prob_crew
+
+prob_survived_given_crew
+```
+
+```{r}
+
+prob_survived_given_passenger <- prob_passenger_and_survived / prob_passenger 
+
+prob_survived_given_passenger
+```
+
+HOMEWORK QUIZ 
+
+MVP 1-5 
+
+1. If I roll a six-sided dice once, what is the probability of getting a number less than 5?
+
+
+```{r}
+one_roll <- rolldie(1)
+
+size_one_roll <- nrow(one_roll)
+
+size_one_roll
+
+```
+
+
+```{r}
+
+less_than_five <- one_roll %>%
+    dplyr::filter(X1 < 5)
+
+less_than_five
+
+size_less <- nrow(less_than_five)
+```
+
+Probability of rolling less than a 5
+
+```{r}
+4/6
+
+```
+
+
+2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
+
+```{r}
+s_three_die <- rolldie(3)
+
+```
+
+```{r}
+
+size_s <- nrow(s_three_die)
+
+```
+
+```{r}
+s_three_die <- s_three_die %>%
+  mutate(total = X1 + X2 + X3)
+
+s_three_die
+
+```
+
+```{r}
+size_s <- nrow(s_three_die)
+
+```
+
+There are 216 outcomes for the Three die roll
+
+3. In an experiment where we roll four dice:
+
+```{r}
+rolldie(4)
+
+```
+
+```{r}
+four_die <- rolldie(4)
+
+size_four <- nrow(four_die)
+```
+
+There are 1296 possible outcomes in the 4 die roll experiment
+
+
+how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
+
+
+```{r}
+four_die <- four_die %>%
+  mutate(total = X1 + X2 + X3 + X4)
+
+```
+
+
+```{r}
+equals_five <- four_die %>%
+  filter(total == 5)
+
+
+```
+
+There are 4 outcomes where the 4 die can equal 5
+
+```{r}
+
+equals_six <- four_die %>%
+  filter(total == 6)
+  
+```
+ There is 10 outcomes where 4 die can total 6
+ 
+```{r}
+equal_seven <- four_die %>%
+  filter(total == 7)
+
+```
+ 
+
+There are 20 outcomes of the 4 die reaching 7
+
+
+what is the probability of this event?
+
+```{r}
+4/1296
+```
+This is the probability of 4 die equalling 5 
+
+```{r}
+10/1296
+
+```
+
+This is the probability of 4 die equalling 6
+
+```{r}
+20/1296
+
+```
+
+This is the probability of 4 die equalling 7
+
+what assumptions do we apply in answering part ii?
+Hint
+For part i, rowSums(.) may help you setup up the necessary random variable
+
+```{r}
+four_die <-four_die %>%
+  mutate(total = rowSums(. == 5))
+```
+
+
+4. Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
+
+
+```{r}
+people <- c(1,2,3,4,5)
+
+seats <- c("A","B","C","D","E")
+
+order_seats <- as.tibble(permutations(n = 5,
+                                      r = 5,
+                                      v = seats, repeats.allowed = FALSE))
+```
+
+```{r}
+order_seats <- order_seats %>%
+    rename(person_1 = V1,
+           person_2 = V2,
+           person_3 = V3,
+           person_4 = V4, 
+           person_5 = V5)
+
+
+```
+
+```{r}
+nrow(order_seats)
+```
+
+There is 120 possibilities of where people can sit 
+
+Hint
+This is an arrangement where order matters. Of all the possible arrangements, how many are correct?
+```{r}
+
+decrease_height <- order_seats %>%
+  filter(person_1 == "A", person_2 == "B", person_3 == "C", person_4 == "D", person_5 == "E")
+
+```
+
+```{r}
+nrow(decrease_height)
+```
+
+Only 1 possiblily is correct
+
+```{r}
+prob_seats <- nrow(decrease_height) / nrow(order_seats)
+
+prob_seats
+```
+
+
+5. I roll six dice:
+
+what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
+
+This is the probability that your roll 6 die and see numbers 6:1 in order
+
+```{r}
+six <- rolldie(6)
+  subset(six, isin(six, c(6,5,4,3,2,1), ordered = TRUE))
+
+```
+
+
+what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the dice regardless of order?
+
+
+This is the probability where order doesn't matter
+
+```{r}
+six_two <- rolldie(6)
+  subset(six_two, isin(six_two, c(6,5,4,3,2,1), ordered = FALSE))
+
+```
+
+[Hint have a look at the isin() function in the prob package. For example, to filter all rows containing 6, 1, 2 in that order, you could use isin(., c(6, 1, 2), ordered = TRUE)]
+
+
+EXTENSION
+
+6. If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
+
+Hints
+Investigate the cards() function in the prob package, if you’d like to try this in R (make a deck without jokers).
+You could think about adding your own black_card random variable to the sample space, which would be TRUE if the suit is ‘Spade’ or ‘Club’, and FALSE otherwise.
+
+```{r}
+s_cards <- cards(jokers = FALSE, makespace = TRUE)
+
+s_cards
+```
+
+```{r}
+black_card <- c("Spade", "Club")
+rank_card <- c(2,3,4,5,6, 7, 8,9,10,"J","Q","K","A")
+
+s_cards_black <- s_cards %>%
+  mutate(black = suit == black_card) %>%
+  mutate(card = rank == rank_card)
+
+```
+
+```{r}
+s_cards_black 
+```
+
+
+
+7. Eight patients: Alice, Bob, Carmen, Dinesh, Ella, Fergus, Gianna and Henry are waiting to see a doctor, but only five appointment slots are left today.
+
+In how many different orders can the doctor see patients today?
+Hint
+permutations() returns a matrix, but it’s better to convert it to a tibble with as_tibble(). You can then set column names etc.]
+What is the probability of Gianna and Danesh both being seen today?
+Hint
+Filter using isin()
+What is the probability of Gianna being seen before Dinesh today?
+Hint
+Think about the ordered = argument of isin()
+(harder) Carmen and Henry have now been triaged as high priority and will be seen in the first two available slots, although their order hasn’t yet been determined. In how many different orders can the patients now be seen?
+Hint
+Think of this as a two-step experiment: (1) choose order of high priority patients, (2) choose order of remaining patients. Get separate tibbles for steps (1) and (2) and then merge() them (make sure the column names are all distinct however or merge() will try to join on any repeated column names - not what we want).]
+
+8. If order is not significant, how many ways are there to select a 5 student quiz team from a group of 8 students?
+
+
+9. (harder) How would your answer for question 8 change if a team captain had to be selected for each team?
+
+
+10. The following data from a sample of 120 families shows the record of university attendance by mothers and their eldest sons.
+
+in 32 families, both the mother and son attended university;
+in 31 families, neither the mother nor the son attended university
+in 22 families, the mother attended university while the son did not
+in 35 families, the son attended university while the mother did not.
+Arrange the data above in a convenient dataframe and answer the following questions:
+
+What is the probability that a son attended university given that his mother attended university?
+What is the probability that a son attended university given that his mother did not attend university?
+Is attending university by the son independent of whether his mother attended university
+
+
+```{r}
+
+uni <- data.frame(
+  mother_yes = c(32, 22), 
+  mother_no = c(35, 31)
+)
+uni <- cbind(uni, rowSums(uni))
+uni <- rbind(uni, colSums(uni))
+colnames(uni) <- c("mother_yes", "mother_no", "sum")
+rownames(uni) <- c("son_yes", "son_no", "sum")
+
+```
+
+```{r}
+
+
+
+```
+

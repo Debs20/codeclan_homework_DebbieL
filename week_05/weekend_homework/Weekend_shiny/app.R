@@ -16,51 +16,56 @@ ui <- fluidPage(
     column(4,
         selectInput("year", 
                     "what year was it released?", 
-                    choices = unique(game_sales$year_of_release))
+                    choices = sort(unique(game_sales$year_of_release))
+            )
         ), 
     
     
     column(4, 
            selectInput("genre",
                        "which genre?",
-                       choices = unique(game_sales$genre))
+                       choices = sort(unique(game_sales$genre))
+           )
          ),
     
     column(4, 
            selectInput("platform",
                        "Which platform is the game for?",
-                       choices = unique(game_sales$platform))
+                       choices = sort(unique(game_sales$platform))
+           )
         ),
     
     mainPanel(
-    
-    DT::dataTableOutput("table_output"), 
-    
-    plotOutput("sales_plot"),
-    
-    plotOutput("platform_plot")
+            
+                DT::dataTableOutput("table_output"), 
         
+         
+               plotOutput("sales_plot"),
+                
+            
+               plotOutput("platform_plot")
+             
+     )
     )
- )
-
+  
 
 server <- function(input, output) {
     
     output$table_output <- DT::renderDataTable({
     
     game_sales %>%
-        filter(year == input$year_of_release)%>%
-        filter(genre == input$genre) %>%
-        filter(platform == inpu$platform) %>%
+        filter(year_of_release %in% input$year)%>%
+        filter(genre %in% input$genre) %>%
+        filter(platform %in% input$platform) %>%
         sort() 
 })
     
     output$sales_plot <- renderPlot({
         
     game_sales %>%
-        filter(year == input$year_of_release) %>%
-        filter(genre == input$genre) %>%
-        filter(platform == inpu$platform)  
+            filter(year_of_release %in% input$year)%>%
+            filter(genre %in% input$genre) %>%
+            filter(platform %in% input$platform)  
  
     ggplot(game_sales) +
         aes(x = year_of_release, y = sales, colour = genre) +
@@ -74,9 +79,9 @@ server <- function(input, output) {
     output$platform_plot <- renderPlot({
         
     game_sales %>%
-        filter(year == input$year_of_release) %>%
-        filter(genre == input$genre) %>%
-        filter(platform == inpu$platform)
+            filter(year_of_release %in% input$year)%>%
+            filter(genre %in% input$genre) %>%
+            filter(platform %in% input$platform)
     
     ggplot(game_sales) +
         aes(x = platform, y = critic_score, fill = user_score) +
