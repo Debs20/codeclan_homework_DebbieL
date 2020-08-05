@@ -121,7 +121,7 @@ size_one_roll
 ```{r}
 
 less_than_five <- one_roll %>%
-    dplyr::filter(X1 < 5)
+   filter(X1 < 5)
 
 less_than_five
 
@@ -135,6 +135,11 @@ Probability of rolling less than a 5
 
 ```
 
+```{r}
+prob_one_roll<- nrow(less_than_five) / nrow(one_roll)
+
+prob_one_roll
+```
 
 2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
 
@@ -164,6 +169,15 @@ size_s <- nrow(s_three_die)
 
 There are 216 outcomes for the Three die roll
 
+Codeclan solution
+```{r}
+size_s <- 6 * 6 * 6
+
+size_s <- nrow(rolldie(3))
+size_s
+```
+
+
 3. In an experiment where we roll four dice:
 
 ```{r}
@@ -178,6 +192,26 @@ size_four <- nrow(four_die)
 ```
 
 There are 1296 possible outcomes in the 4 die roll experiment
+
+codeclan solution
+```{r}
+four_die_2 <- four_die %>%
+  mutate(total = rowSums(.))
+```
+
+
+```{r}
+four_die_total_between_5_7 <- four_die_2 %>%
+  filter(total %in% c(5, 6, 7))
+```
+
+```{r}
+nrow(four_die_total_between_5_7)
+```
+
+```{r}
+prob <- nrow(four_die_total_between_5_7) / nrow(four_die_2)
+```
 
 
 how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
@@ -300,6 +334,18 @@ prob_seats
 ```
 
 
+
+```{r}
+num_outcome <- factorial(5)
+
+prob_perfect_order <- 1/num_outcome
+
+prob_perfect_order
+
+```
+
+Codeclan Solution
+
 5. I roll six dice:
 
 what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
@@ -312,6 +358,10 @@ six <- rolldie(6)
 
 ```
 
+```{r}
+prob <- 1 / nrow(six)
+
+```
 
 what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the dice regardless of order?
 
@@ -322,7 +372,16 @@ This is the probability where order doesn't matter
 six_two <- rolldie(6)
   subset(six_two, isin(six_two, c(6,5,4,3,2,1), ordered = FALSE))
 
+
 ```
+
+```{r}
+
+
+prob <- nrow(six_two) / nrow(six)
+
+```
+
 
 [Hint have a look at the isin() function in the prob package. For example, to filter all rows containing 6, 1, 2 in that order, you could use isin(., c(6, 1, 2), ordered = TRUE)]
 
@@ -336,26 +395,28 @@ Investigate the cards() function in the prob package, if you’d like to try thi
 You could think about adding your own black_card random variable to the sample space, which would be TRUE if the suit is ‘Spade’ or ‘Club’, and FALSE otherwise.
 
 ```{r}
-s_cards <- cards(jokers = FALSE, makespace = TRUE)
+s_cards <- cards(jokers = FALSE)
 
 s_cards
 ```
 
 ```{r}
-black_card <- c("Spade", "Club")
-rank_card <- c(2,3,4,5,6, 7, 8,9,10,"J","Q","K","A")
+
+s_cards <- s_cards %>%
+  mutate(black_card = suit == "Club" | suit == "Spade")
 
 s_cards_black <- s_cards %>%
-  mutate(black = suit == black_card) %>%
-  mutate(card = rank == rank_card)
+  filter(black_card == TRUE & suit == "Spade")
+prob_spades_and_black <- nrow(s_cards_black) / nrow(s_cards)
+
+s_black <- s_cards %>%
+  filter(black_card == TRUE)
+prob_black <- nrow(s_black) / nrow(s_cards)
+
+prob_spades_given_black <- prob_spades_and_black / prob_black
+prob_spades_given_black
 
 ```
-
-```{r}
-s_cards_black 
-```
-
-
 
 7. Eight patients: Alice, Bob, Carmen, Dinesh, Ella, Fergus, Gianna and Henry are waiting to see a doctor, but only five appointment slots are left today.
 
@@ -370,12 +431,108 @@ Hint
 Think about the ordered = argument of isin()
 (harder) Carmen and Henry have now been triaged as high priority and will be seen in the first two available slots, although their order hasn’t yet been determined. In how many different orders can the patients now be seen?
 Hint
-Think of this as a two-step experiment: (1) choose order of high priority patients, (2) choose order of remaining patients. Get separate tibbles for steps (1) and (2) and then merge() them (make sure the column names are all distinct however or merge() will try to join on any repeated column names - not what we want).]
+Think of this as a two-step experiment: (1) choose order of high priority patients, (2) choose order of remaining patients. Get separate tibbles for steps (1) and (2) and then merge() them (make sure the column names are all distinct however or merge() will try to join on any repeated column names - not what we want).
+
+```{r}
+patients <- c("Alice", "Bob", "Carmen", "Dinesh", "Ella", "Fergus", "Gianna", "Henry")
+S <- as_tibble(permutations(n = 8, r = 5, v = patients, repeats.allowed = FALSE))
+
+```
+
+
+```{r}
+names(S) <- c("appt1", "appt2", "appt3", "appt4", "appt5")
+# answer
+nrow(S)
+```
+
+```{r}
+# ii.
+# now filter the tibble
+S_Gianna_Dinesh <- S %>%
+  filter(isin(., c("Gianna", "Dinesh"), ordered = FALSE))
+# then calculate required probability
+prob <- nrow(S_Gianna_Dinesh) / nrow(S)
+prob
+
+```
+
+```{r}
+# iii.
+# filter tibble, this time with ordering, Gianna before Dinesh
+S_Gianna_before_Dinesh <- S %>%
+  filter(isin(., c("Gianna", "Dinesh"), ordered = TRUE))
+# new prob
+prob <- nrow(S_Gianna_before_Dinesh) / nrow(S)
+prob
+```
+
+
+```{r}
+# this should be half the probability of question ii, because, in filtered outcomes for 
+# question ii., Gianna would be before Dinesh half the time.
+
+# iv.
+# first step is a 2P2 problem: permute 2 patients from 2.
+high_priority_patients <- c("Carmen", "Henry")
+S_high_priority <- as_tibble(permutations(n = 2, r = 2, v = high_priority_patients, repeats.allowed = FALSE))
+names(S_high_priority) <- c("appt1", "appt2")
+
+# second step is a 6P3 problem: permute 3 patients from 6.
+normal_priority_patients <- c("Alice", "Bob", "Dinesh", "Ella", "Fergus", "Gianna")
+S_normal_priority <- as_tibble(permutations(n = 6, r = 3, v = normal_priority_patients, repeats.allowed = FALSE))
+names(S_normal_priority) <-c("appt3", "appt4", "appt5")
+
+# merge these dataframes
+S <- merge(S_high_priority, S_normal_priority)
+# final answer
+nrow(S)
+
+```
+
+
+
+```{r}
+
+# How would we do this 'mathematically': high priority patients: 2! = 2 ways to order them. Now have 6 remaining patients for 3 named slots, so have 6!/3! ways to order. Use multiple step counting rule: (6 * 5 * 4) * (2 * 1) = 240 
+
+```
+
 
 8. If order is not significant, how many ways are there to select a 5 student quiz team from a group of 8 students?
 
 
+```{r}
+teams <- combinations(n = 8 , r = 5, v = 1:8, repeats.allowed = FALSE)
+nrow(teams)
+```
+
+
 9. (harder) How would your answer for question 8 change if a team captain had to be selected for each team?
+
+
+```{r}
+# step 1: choose a captain. We have 8 choices
+num_captains <- 8
+
+# step 2: for each choice of captain, choose 4 remaining team members from 7 
+teams <- combinations(n = 7, r = 4, v = 1:7, repeats.allowed = FALSE)
+num_team_combinations <- nrow(teams)
+
+# combinations
+num_captains * num_team_combinations
+
+```
+
+```{r}
+
+# 'mathematically': choice of 8 captains, and then, for each captain, a choice of 4 team members
+# from 7 students, i.e. 7C4 = 7!/(4!*3!) = 7*6*5/(3*2*1) = 35. 
+# So final number of team variations with captain is 8 * 35 = 280
+
+# alternative 'mathematical' method. In question 8, worked out that there are 56 ways to choose a team of 5 from amongst 8 students. Now, for each of those 56 teams, there are 5 choices of captain, so final number of team variations with captain is 56 * 5 = 280
+
+```
 
 
 10. The following data from a sample of 120 families shows the record of university attendance by mothers and their eldest sons.
@@ -392,7 +549,6 @@ Is attending university by the son independent of whether his mother attended un
 
 
 ```{r}
-
 uni <- data.frame(
   mother_yes = c(32, 22), 
   mother_no = c(35, 31)
@@ -402,11 +558,68 @@ uni <- rbind(uni, colSums(uni))
 colnames(uni) <- c("mother_yes", "mother_no", "sum")
 rownames(uni) <- c("son_yes", "son_no", "sum")
 
+# total number of families
+total <- uni["sum", "sum"]
+total
+```
+
+
+```{r}
+
+# marginal probabilities
+prob_son_yes <- uni["son_yes", "sum"] / total
+cat("prob_son_yes: ", prob_son_yes)
 ```
 
 ```{r}
 
+prob_son_no <- uni["son_no", "sum"] / total
+cat("prob_son_no: ", prob_son_no)
+```
 
+```{r}
+
+prob_mother_yes <- uni["sum", "mother_yes"] / total
+cat("prob_mother_yes: ", prob_mother_yes)
+```
+
+```{r}
+
+prob_mother_no <- uni["sum", "mother_no"] / total
+cat("prob_mother_no", prob_mother_no)
+```
+
+```{r}
+
+# i.
+prob_son_and_mother_yes <- uni["son_yes", "mother_yes"] / total
+prob_son_yes_given_mother_yes <- prob_son_and_mother_yes / prob_mother_yes
+cat("prob_son_yes_given_mother_yes: ", prob_son_yes_given_mother_yes)
+```
+
+
+```{r}
+
+# ii.
+prob_son_yes_and_mother_no <- uni["son_yes", "mother_no"] / total
+prob_son_yes_given_mother_no <- prob_son_yes_and_mother_no / prob_mother_no
+cat("prob_son_yes_given_mother_no: ", prob_son_yes_given_mother_no)
+```
+
+
+```{r}
+
+
+# iii.
+# The probability of a son going to university depends upon whether their mother
+# went to university, as 
+prob_son_yes_given_mother_yes != prob_son_yes
+```
+
+```{r}
+
+# and
+prob_son_yes_given_mother_no != prob_son_yes
 
 ```
 

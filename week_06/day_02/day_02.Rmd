@@ -1,0 +1,121 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("MASS")
+```
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(MASS)
+library(skimr)
+```
+
+
+
+```{r}
+items <- read_csv("~/codeclan_work/codeclan_homework_DebbieL/week_06/day_02/20190928-items.csv")
+
+```
+
+1. Load the data, clean_names() and explore it.
+
+```{r}
+items
+
+```
+
+
+Find the brand with the highest numbers of phones in the dataset.
+
+```{r}
+
+glimpse(items)
+  
+
+```
+
+```{r}
+items %>%
+  group_by(brand) %>%
+  count(brand) %>%
+  arrange(desc(n)) %>%
+  head(1)
+  
+
+```
+
+2. For your top brand, plot the distribution of phone ratings as a probability density, overlaying a fitted normal distribution. Do you think the normal distribution provides a good model of these ratings?
+
+
+```{r}
+samsung_mean <- items %>% 
+                summarise(mean_rating = mean(rating))
+
+samsung_mean
+```
+
+```{r}
+samsung_sd <- items %>%
+              group_by(brand) %>%
+              summarise(
+              sd = sd(rating))
+samsung_sd
+
+```
+
+
+```{r}
+
+items %>%
+  group_by(brand) %>%
+  skim()
+
+```
+
+
+```{r}
+samsung_normal <- tibble(
+    z = seq(from = -4, to = 4, by = 0.01),
+  f_z = dnorm(x = z)
+)
+
+samsung_normal %>%
+  ggplot(aes(x = z, y = f_z)) +
+  geom_line()
+
+
+```
+
+[Hint - you will need to calculate the mean() and sd() of the ratings to plot the appropriate normal. Alternatively, investigate using the fitdistr() function in the MASS package]
+
+
+We can be more quantitative in comparing the distribution of top brand ratings with a normal distribution. You calculated the mean() and sd() of your distribution in an earlier question. Use these values to calculate the proportions of ratings within one-, two- and three standard deviations of the mean. Compare these proportions with those you expect for a normal distribution.
+
+
+```{r}
+
+items %>%
+  group_by(brand) %>%
+  summarise(var = var(rating))
+
+```
+
+
+
+
+You can use a filter() to get only the ratings within one-, two- and three standard deviations of the mean, and then think about how to calculate what proportion each of these filtered sets make of the total number of ratings. You’ll need to use three separate filter() and summarise() pipes to do this.
+
+```{r}
+
+samsung_ratings %>%
+  filter(rating >= samsung_stats$mean - samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + samsung_stats$sd) %>%
+  summarise(prop_within_1sd = n() / nrow(samsung_ratings))
+
+```
+
