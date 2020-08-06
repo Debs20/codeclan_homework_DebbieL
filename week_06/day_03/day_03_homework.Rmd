@@ -1,0 +1,252 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+1 MVP
+Now we’ll go back to CI creation in the normal fashion. We’ll take the ames data from the CIs lab earlier today and regard it now as a sample, we won’t be drawing any smaller samples from within it. This is the usual situation in an analysis: you use all the data available to you!
+
+
+Load the data again, clean_names(), and re-familiarise yourself with it
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(infer)
+
+```
+
+
+```{r}
+ames_resample <- read_csv("~/codeclan_work/codeclan_homework_DebbieL/week_06/day_03/data/ames.csv")
+```
+
+
+```{r}
+ames_clean <- clean_names(ames_resample)
+
+ames_clean
+```
+
+
+Investigate the distribution of lot_area. Is the distribution roughly normal? If not, what problems do you find?
+
+
+```{r}
+ames_clean_mean <- ames_clean %>%
+  summarise(
+    mean_lot_area = mean(lot_area))
+
+ames_clean_mean
+
+
+```
+other variablle of interest
+
+```{r}
+ames_clean %>%
+  ggplot(aes(x = sale_price)) +
+  geom_histogram(col = "white", fill = "steel blue", alpha = 0.5)
+
+```
+
+
+
+Compute and visualise a bootstrap sampling distribution for the mean(lot_area) of the sold houses.
+
+
+
+```{r}
+bootstrap_resample_200 <- ames_clean %>%
+                      rep_sample_n(size = 200, replace = TRUE, reps = 200) %>%
+                      summarise(
+                      mean_lot_area = mean(lot_area)
+                      )
+
+bootstrap_resample_200
+```
+
+
+```{r}
+bootstrap_resample_200 %>%
+  ggplot(aes(x = mean_lot_area)) +
+  geom_histogram(col = "white", fill = "steel blue", alpha = 0.7)
+
+```
+
+
+Use your bootstrap distribution to calculate a 95% CI for mean(lot_area), and visualise it on the distribution
+
+
+```{r}
+ci_95 <- bootstrap_resample_200 %>%
+  summarise(
+    mean = mean(mean_lot_area),
+    lower_bound = quantile(mean_lot_area, probs = 0.025),
+    upper_bound = quantile(mean_lot_area, probs = 0.975)
+  )
+
+ci_95
+
+```
+
+Bootstrap distribution
+
+```{r}
+infer_resample <- ames_clean %>%
+      specify(response = lot_area) %>%
+      generate(reps = 200, type = "bootstrap") %>%
+      calculate(stat = "mean")
+
+infer_resample
+
+```
+
+
+```{r}
+infer_resample_95 <- infer_resample %>%
+        get_confidence_interval(level = 0.95, type = "percentile")
+
+infer_resample_95
+
+```
+
+```{r}
+infer_resample %>%
+  visualise(bins = 30) +
+  shade_confidence_interval(endpoints = infer_resample_95)
+
+```
+
+
+You would like to know the mean(lot_area) of the sold houses with higher confidence. Calculate the 99% CI for this variable (you can re-use your bootstrap distribution from above). Is it narrower or broader than the 95% CI? Does that make sense?
+
+
+```{r}
+
+ci_99 <- bootstrap_resample_200 %>%
+  summarise(
+    mean = mean(mean_lot_area),
+    lower_bound = quantile(mean_lot_area, probs = 0.005),
+    upper_bound = quantile(mean_lot_area, probs = 0.995)
+  )
+
+ci_99
+```
+
+
+
+Calculate the point estimate of the mean(lot_area)
+
+```{r}
+infer_resample %>%
+  summarise(mean(stat))
+
+```
+
+
+2 Extension
+
+
+Calculate a point estimate and 95% CI for the proportion of houses in the data built before 1920. Does the number of reps you use matter? [Investigate reps from 200 up to 50000, memory of your laptop permitting].
+
+[Hint - the current implementation of calculate(stat = "prop") in infer is slow! You can get around this by treating the mean in this way: add a new column via mutate(before_1920 = as.numeric(year_built < 1920)) and then calculate(stat = "mean") on this new column]
+
+
+```{r}
+ames_built <- ames_clean %>%
+      filter(year_built < 1920)
+
+ames_built
+
+```
+
+```{r}
+
+bootstrap_ames_built_176 <- ames_built %>%
+    rep_sample_n(size = 176, replace = TRUE, reps = 176) %>%
+    summarise(
+      mean_year_built = mean(year_built)
+    )
+
+bootstrap_ames_built_176
+  
+```
+
+
+```{r}
+
+bootstrap_ames_built_176 %>%
+  ggplot(aes(x = mean_year_built)) +
+  geom_histogram(col = "white", fill = "steel blue", alpha = 0.7)
+
+```
+
+
+```{r}
+ames_ci_95 <- bootstrap_ames_built_176 %>%
+  summarise(
+    mean = mean(mean_year_built),
+    lower_bound = quantile(mean_year_built, probs = 0.025),
+    upper_bound = quantile(mean_year_built, probs = 0.975)
+  )
+
+ames_ci_95
+
+```
+
+
+```{r}
+infer_ames_built <- ames_built %>%
+  specify(response = year_built) %>%
+  generate(reps = 176, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+infer_ames_built
+
+```
+
+
+```{r}
+infer_ci_95_ames <- infer_ames_built %>%
+  get_confidence_interval(level = 0.95, type = "percentile")
+
+infer_ci_95_ames
+
+```
+
+```{r}
+infer_ames_built %>%
+  visualise(bins = 30) +
+  shade_confidence_interval(endpoints = infer_ci_95_ames)
+
+```
+
+
+```{r}
+infer_ames_built %>%
+  summarise(mean(stat))
+
+```
+
+
+
+```{r}
+ames_built_2 <- ames_built %>%
+  mutate(before_1920 = as.numeric(year_built < 1920))
+
+ames_built_2
+
+```
+
+```{r}
+bootstrap_ames_built2_176 <- ames_built_2 %>%
+    rep_sample_n(size = 176, replace = TRUE, reps = 176) %>%
+    summarise(
+      mean_year_built = mean(before_1920)
+    )
+
+
+bootstrap_ames_built2_176
+```
+
