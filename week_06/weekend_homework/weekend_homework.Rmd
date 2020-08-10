@@ -1,0 +1,572 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggplot2)
+library(infer)
+
+```
+
+
+alpha- 0.05
+
+H0: μsleep_total=7 
+
+Ha: μsleep_total≠7 
+
+Explore the dataset and familiarise yourself with it.
+
+```{r}
+msleep
+
+```
+
+
+```{r}
+msleep_tidy <- msleep %>%
+  clean_names() %>%
+  glimpse()
+```
+
+
+Jabberwockies sleep for around 7 hours a night, on average. Perform an appropriate statistical test to determine whether the mean sleep_total in the sampled population of animal types differs from the typical value for jabberwockies.
+
+```{r}
+
+msleep_tidy_prop <- msleep_tidy %>%
+  mutate(sleep_total_flag = ifelse(sleep_total != 7, "yes", "no"))
+
+head(msleep_tidy)
+
+```
+
+Null distribution
+```{r}
+ 
+null_distribution_msleep <- msleep_tidy_prop %>%
+  specify(response = sleep_total_flag, success = "yes") %>% 
+  hypothesize(null = "point", p = 0.07) %>%
+  generate(reps = 10000, type = "simulate") %>%
+  calculate(stat = "prop") 
+
+head(null_distribution_msleep)
+  
+```
+
+
+```{r}
+null_distribution_msleep %>%
+  visualise(bins = 20)
+```
+
+```{r}
+observed_stat_msleep <- msleep_tidy_prop %>%
+  specify(response = sleep_total_flag, success = "yes") %>%
+  calculate(stat = "prop")
+
+observed_stat_msleep
+```
+
+```{r}
+null_distribution_msleep %>%
+  visualise(bins = 20) + 
+  shade_p_value(obs_stat = observed_stat_msleep, direction = "both")
+
+```
+
+```{r}
+p_value_msleep <- null_distribution_msleep %>%
+  get_p_value(obs_stat = observed_stat_msleep, direction = "both")
+
+p_value_msleep
+```
+
+CODECLAN SOLUTION
+
+```{r}
+
+null_distribution <- msleep %>%
+  specify(response = sleep_total) %>%
+  hypothesize(null = "point", mu = 7) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+obs_stat <- msleep %>%
+  specify(response = sleep_total) %>%
+  calculate(stat = "mean")
+
+null_distribution %>%
+  visualise() +
+  shade_p_value(direction = "both", obs_stat = obs_stat)
+```
+
+
+```{r}
+null_distribution %>%
+  get_p_value(direction = "both", obs_stat = obs_stat)
+
+```
+
+The p-value is below α and so we reject H0 and conclude that the mean sleep_total in the sampled population of animal types differs significantly from the value of 7 hours typical of jabberwockies.
+
+
+Perform an appropriate statistical test to determine whether omnivores sleep for significantly longer than herbivores, on average.
+
+```{r}
+
+type <- c("carni", "omni", "herbi", "insecti")
+
+msleep_tidy %>% 
+  group_by(vore) %>%
+  drop_na(vore) 
+
+```
+
+CODECLAN SOLUTION
+
+H0:  μsleep_total(omni)−μsleep_total(herbi)=0
+
+Ha : μsleep_total(omni)−μsleep_total(herbi)>0 α=0.05
+
+```{r}
+
+msleep %>%
+  distinct(vore)
+```
+
+
+```{r}
+null_distribution <- msleep %>%
+  filter(vore %in% c("omni", "herbi")) %>%
+  specify(sleep_total ~ vore) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+obs_stat <- msleep %>%
+  filter(vore %in% c("omni", "herbi")) %>%
+  specify(sleep_total ~ vore) %>%
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+null_distribution %>%
+  visualise() +
+  shade_p_value(direction = "right", obs_stat = obs_stat)
+
+```
+
+
+```{r}
+null_distribution %>%
+  get_p_value(direction = "right", obs_stat = obs_stat)
+
+```
+
+
+The p-value is equal to or greater than α, and so we fail to reject H0. There is insufficient evidence to conclude that omnivores sleep for significantly longer than herbivores on average.
+
+
+Perform an appropriate statistical test to determine whether the proportion of domesticated animal types in the population of animal types is greater than 5%.
+[Hint - think about creating an is_domesticated variable for the analysis]
+
+H0: πdomesticated=0.05
+
+Ha : πdomesticated>0.05
+
+α=0.05
+
+
+```{r}
+
+msleep %>%
+  distinct(conservation)
+
+```
+
+We need to create a new is_domesticated variable for the analysis
+
+```{r}
+msleep_domesticated <- msleep %>%
+  mutate(is_domesticated = conservation == "domesticated")
+
+```
+
+Now we’ll do the hypothesis test!
+
+```{r}
+
+null_distribution <- msleep_domesticated %>%
+  specify(response = is_domesticated, success = "TRUE") %>%
+  hypothesize(null = "point", p = 0.05) %>%
+  generate(reps = 20000, type = "simulate") %>%
+  calculate(stat = "prop")
+
+```
+
+
+
+```{r}
+
+obs_stat <- msleep_domesticated %>%
+  specify(response = is_domesticated, success = "TRUE") %>%
+  calculate(stat = "prop")
+```
+
+
+
+```{r}
+null_distribution %>%
+  visualise() +
+  shade_p_value(direction = "right", obs_stat = obs_stat)
+
+```
+
+
+```{r}
+null_distribution %>%
+  get_p_value(direction = "right", obs_stat = obs_stat)
+
+```
+
+The p-value is less than α, so we reject H0 and accept that the proportion of domesticated animal types in the data is significantly greater than 5%
+
+Could also do this by bootstrapping a numerical flag: we should get reasonably similar results, but more quickly.
+
+```{r}
+msleep_domesticated_flag <- msleep %>%
+  mutate(domesticated_flag = if_else(conservation == "domesticated", 1, 0))
+
+null_distribution <- msleep_domesticated_flag %>%
+  specify(response = domesticated_flag) %>%
+  hypothesize(null = "point", mu = 0.05) %>%
+  generate(reps = 20000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+```
+
+
+```{r}
+null_distribution %>%
+  visualise() +
+  shade_p_value(direction = "right", obs_stat = obs_stat)
+
+```
+
+
+
+```{r}
+null_distribution %>%
+  get_p_value(direction = "right", obs_stat = obs_stat)
+```
+
+
+1.2 Hypothesis testing - interpretation
+
+1.2.1 Defining the Hypothesis
+For the following three business problems write out H0 and Ha in both mathematical notation and in words. Also state the method you would use to generate the null distribution (bootstrap, permutation or simulation).
+
+You work for a independent coffee shop. You’ve performed a small survey in the local town and found that 40% of the people you randomly asked were aware of your shop in the town. You then conduct a marketing campaign by flyering local venues and targeting advertisements on social media. Finally you conduct a second small random survey in the town, asking if people are aware of your coffee shop. You want to test the hypothesis that the campaign has significantly increased awareness of the shop.
+
+Solution
+
+Test
+One-sample proportion, right-sided.
+
+Words
+H0: the proportion of the town population who are aware of our shop is 40% (or lower) Ha: the proportion of the town population who are aware of our shop is greater than 40%
+
+Maths
+H0: πawareness=0.4
+Ha: πawareness>0.4
+
+Null distribution generation
+Simulation
+
+We fail to reject H0. Based on our sample, we do not have enough evidence that the proportion of people in town who have awareness of our coffee shop is significantly greater than 40%.
+
+2. You work for a website design company and have performed an A/B test on the position of a banner on a website page promoting a particular item.
+
+
+A/B testing A method comparing two versions of a web page, email, flyer or other marketing device against each other to determine which version performs better. As it is essentially a controlled experiment, the design should try to ensure that the groups experiencing both versions of the marketing device are need to establish that the two groups are equivalent and representative of the population.
+
+
+In the current test, the first group continues to be shown the banner at the right hand side of the webpage (its usual position) while the test group is shown it at the top of the page. The performance metric we will be testing is click through rate (CTR) on the banner, i.e. what proportion of users click on the banner
+
+SOLUTION
+
+We would only want to change the website if the CTR for the new position was significantly higher than the current position.
+Test
+Two-samples proportion, right-sided.
+
+Words H0: the CTR with the banner at the top of the website is the same as (or less than) the CTR with the banner at the right hand side of the website.
+Ha: the CTR with the banner at the top of the website is greater than the CTR with the banner at the right hand side of the website.
+
+Maths
+H0: πCTR(top)−πCTR(right)=0
+Ha: πCTR(top)−πCTR(right)>0
+
+Null distribution generation
+Permutation
+
+We reject H0 in favour of Ha. We have strong enough evidence from the sampling to suggest that the CTR for the banner placed at the top of the page is significantly greater than the banner placed at the right-hand side of the page.
+
+
+3. You work as an analyst for a car manufacturing company - they have specific standards they must meet for standards and regulation purposes. You have been asked to check the quality control of the manufacture of a particular car part. The part must have a width of 145mm, with a small (given) level of tolerance. You have been given data on a sample of 1,000 parts produced over the period of a week.
+
+SOLUTION
+
+Test
+One-sample mean test, two-sided.
+
+Words
+H0: the average width of the car part produced at our company is equal to 145mm
+Ha: the average width of the car part produced at our company is different from 145mm
+
+Maths
+H0: μwidth=145 Ha: μwidth≠145
+
+Null distribution generation
+Bootstrap
+
+
+We fail to reject H0. Based on our sample, we do not have strong enough evidence to conclude that the average width of the car part we manufacture is significantly different from 145mm.
+
+
+
+EXTENSION
+
+2.1 Market Basket Analysis
+
+Association rule mining is regularly used by retailers to find associations between products that people purchase, perhaps for an online retailer, the items that people put together in their ‘baskets’, and in a bricks and mortar retailer, the items purchased together in a single transaction. The aim is to find recurring patterns in the transactions which the retailer can then use to do targeted marketing of items, seeking to increase ‘cross sales’. Rules mining of this sort can also be used in other industries beyond retail to identify patterns in data.
+
+Market basket analysis (MBA) uses association rule mining. It looks at the association of items occurring in a single basket, and so won’t look at your purchases over time, but only items that are purchased together in a single purchase (i.e. a ‘basket’). As a good example, you may have seen the ‘Frequently Bought Together’ section on Amazon (and other sites), which looks at items you’ve got in your basket and suggests items that other people commonly have in their baskets when they also have these items:
+
+MBA differs from recommendation algorithms because the association rules look only at items bought together in a single purchase, they don’t use any characteristics of the purchaser to profile them (e.g. ‘Based on purchases by people like you, you may also like…’) or how their purchases vary over time. The association rules used for MBA use the probability principles we learned on Monday this week.
+
+2.2 Association rules
+
+The rules obtained by MBA have three concepts associated with them, as follows:
+
+Support
+The probability of items in the rule being purchased together:
+
+e.g. sup(A→B)=P(A and B being purchased together)=number of transactions involving A and Btotal number of transactions
+
+Support also has meaning for single items:
+
+e.g. sup(A)=P(A)=number of transactions involving Atotal number of transactions
+
+Confidence
+The proportion of purchases of A where B has also been purchased:
+
+e.g. conf(A→B)=P(A and B being purchased together)P(A being purchased)
+
+Lift
+Increase in sales of A when sold with B
+
+lift(A→B)=sup(A→B)sup(A)×sup(B)
+
+If sup(A→B)=sup(A)×sup(B) then this means P(A and B)=P(A)×P(B). We know from the probability lesson earlier in the week that this means the purchase of A and B are independent events. This may help with our interpretation of lift values:
+
+lift(A→B)>1 - items A and B are more likely to be bought together
+lift(A→B)=1 - no correlation between items A and B being bought together
+lift(A→B)<1 - items A and B are unlikely to be bought together
+A and B don’t need to be single items, they could be sets of items (itemsets) e.g. A = {TV, DVD player}, B = {TV stand}.
+
+2.3 Using the rules
+
+Once we have calculated the rules we can use them to gain insights about items/itemsets.
+
+For example, if for items A and B the corresponding rule (A→B) has a low support but a lift greater than 1 then we can say that when A is purchased B is often purchased with it (high lift), but such transactions don’t happen all that frequently (low support).
+
+The apriori algorithm is often used as a way of selecting ‘interesting’ rules. It will calculate all the support, confidence and lift values for the item/itemset combinations of your dataset and will return those with support values greater than a pre-defined threshold value set by the user.
+
+2.4 Homework exercise
+
+
+Let’s load in some transaction data which has details on the items purchased in each transaction (where each transaction is uniquely identified by the InvoiceNo variable).
+
+```{r}
+transactions <- read_csv("~/d4_classnotes/week_06/day_5/weekend_homework/data/online_retail_subset.csv")
+
+```
+
+```{r}
+
+head(transactions, 20)
+```
+
+
+2.5 Association rules
+
+For the first section we are interested in the purchase of two particular items:
+
+item A - ‘HEART OF WICKER SMALL’ (StockCode 22469)
+item B - ‘LARGE CAKE TOWEL PINK SPOTS’ (StockCode 21110)
+Calculate the support for item A (this will be the support for a single item)
+
+```{r}
+total_transactions <- transactions %>%
+  summarise(n = n_distinct(InvoiceNo)) %>%
+  flatten_dbl()
+
+support_a <- transactions %>%
+  filter(StockCode == 22469) %>%
+  summarise(prop_invoices_with_item = n_distinct(InvoiceNo) / total_transactions)
+
+support_a
+
+```
+
+So item A is purchased in 7.7% of transactions.
+
+2. Calculate the support and confidence for rule (A→B).
+
+solution
+
+Probably conceptually the easiest way to do this is by joining two tibbles containing the unique InvoiceNos of all the transactions involving item A, and the same for item B. We can then join the tibbles on InvoiceNo to look for values in common: these will be transactions involving both items.
+
+```{r}
+trans_feat_a <- transactions %>%
+  filter(StockCode == "22469") %>%
+  distinct(InvoiceNo)
+
+trans_feat_b <- transactions %>%
+  filter(StockCode == "21110") %>%
+  distinct(InvoiceNo)
+
+trans_feat_a_b <- trans_feat_a %>%
+  inner_join(trans_feat_b, by = "InvoiceNo")
+
+support_a_b <- trans_feat_a_b %>%
+  summarise(prop_with_a_b = n() / total_transactions)
+support_a_b
+
+```
+
+```{r}
+confidence_a_b <- support_a_b / support_a
+confidence_a_b
+
+```
+
+We can also do this in a single pipeline, but it is more complex!
+
+```{r}
+support_a_b <- transactions %>%
+  filter(StockCode == "22469" | StockCode == "21110") %>%
+  group_by(InvoiceNo, StockCode) %>% #group by in case cases where more than one stock in a purchase
+  summarise(count_of_item = n()) %>% 
+  group_by(InvoiceNo) %>%
+  summarise(count_of_A_and_B = n()) %>%
+  filter(count_of_A_and_B > 1) %>%
+  summarise(prop_with_A_and_B = n()/total_transactions)
+
+```
+
+```{r}
+
+support_a_b 
+```
+
+```{r}
+confidence_a_b <- support_a_b / support_a
+
+confidence_a_b
+
+```
+
+So, if someone buys item A there is an 4.6% probability that they will then buy item B.
+
+3. Calculate the lift for (A→B)
+[Hint - you will need to calculate the support for B]
+
+SOLUTION
+
+```{r}
+support_b <- transactions %>%
+  filter(StockCode == 21110) %>%
+  summarise(prop_invoices_with_item = n_distinct(InvoiceNo)/total_transactions)
+
+lift_a_b <- support_a_b / (support_a * support_b)
+
+lift_a_b
+
+```
+
+The lift is high, so A and B are more likely to be sold together, but from the support of A (7.7%) and confidence of (A→B) (4.6%), we see that happens at quite a low frequency.
+
+
+2.6
+
+Read up on the arules and arulesViz packages, which make use of the ‘apriori’ algorithm http://www.salemmarafi.com/code/market-basket-analysis-with-r/comment-page-1/
+
+Use these packages to play around, applying the apriori algorithm to the transactions dataset we have.
+
+To use the arules package we need the data to be a special type of ‘transactions’ object. We do this by reading in the data using read.transactions() function from the arules package. We have done this for you below (for more information on this type of transactions object see the helpfile ?transactions):
+
+```{r}
+install.packages("arules")
+install.packages("arulesViz")
+```
+
+```{r}
+
+library(arules)
+library(arulesViz)
+```
+
+```{r}
+transactions_reformat <- transactions %>%
+  select(InvoiceNo, Description) %>%
+  na.omit()
+
+write_csv(transactions_reformat, "transactions_reformat.csv")
+
+apriori_format <- read.transactions("transactions_reformat.csv", format = "single", sep = ",", header = TRUE, cols = c("InvoiceNo", "Description"))
+
+```
+
+
+```{r}
+inspect(head(apriori_format))
+
+```
+
+Now you’re all set to play around with arules and arulesViz.
+
+Warning about run time/memory usage: if the minimum support is set too low for the dataset, then the algorithm will try to create an extremely large set of itemsets/rules. This will result in very long run times and the process may eventually run out of memory. You can either start by trying a reasonably high support (for this dataset, we would suggest starting at 1 and then systematically lower the support if don’t see any results). There is also an argument maxtime which can be used to prevent long run times (more information on that in the apriori user document here).
+
+EXAMPLE SOLUTION
+
+```{r}
+
+#can take a look at top frequency items
+itemFrequencyPlot(apriori_format, topN=20, type="absolute")
+```
+
+```{r}
+rules <- apriori(apriori_format, parameter = list(supp = 0.01, conf = 0.8))
+
+```
+
+```{r}
+rules <- sort(rules, by = 'confidence', decreasing = TRUE)
+summary(rules)
+
+```
+
+```{r}
+top_10 <- rules[1:10]
+inspect(top_10)
+
+```
+
+```{r}
+plot(top_10)
+
+```
+
