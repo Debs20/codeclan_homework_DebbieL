@@ -21,6 +21,8 @@ rm(postgresql_username, postgresql_password)
 
 ```
 
+Now use SQL queries within R to answer all of the following questions.
+
 Create a new data.frame containing the details of all employees held in the database
 
 
@@ -31,8 +33,17 @@ FROM employees AS e
 INNER JOIN Teams AS T
 ON e.id = t.id
 
+```
+
+SOLUTION
+
+```{r}
+all_employees <- dbGetQuery(db_connect_3, "SELECT * FROM employees")
+all_employees
 
 ```
+
+
 
 Retrieve the records for all employees again, but this time add a field full_name containing the first_name and last_name of each employee separated by a space.
 
@@ -49,6 +60,16 @@ WHERE first_name IS NOT NULL AND last_name IS NOT NULL
   
 ```
 
+SOLUTION
+
+```{sql connection=db_connect_3}
+SELECT 
+  *, 
+  CONCAT(first_name, ' ', last_name) AS full_name 
+FROM employees
+```
+
+
 Retrieve the details of all employees again, but this time listing their team name (as team_name), rather than their team_id.
 
 ```{sql connection=db_connect_3}
@@ -63,6 +84,19 @@ FROM employees AS e
 LEFT JOIN teams AS t
 ON e.team_id = t.id
 ```
+
+SOLUTION
+
+```{sql connection=db_connect_3}
+SELECT 
+  e.first_name, 
+  e.last_name, 
+  e.email, 
+  t.name AS team_name
+FROM employees AS e LEFT JOIN teams AS t
+ON e.team_id = t.id
+```
+
 
 Bit Harder] Do a breakdown of the number of employees per team (here we want two columns: team_name and num_employees). Order the table in decreasing number of employees. Include all teams, even if they have no employees.
 
@@ -80,6 +114,20 @@ ORDER BY num_employees DESC
 
 ```
 
+SOLIUTION
+
+```{sql connection=db_connect_3}
+SELECT 
+  t.name AS team_name, 
+  COUNT(e.id) AS num_employees
+FROM teams AS t 
+LEFT JOIN employees AS e 
+ON e.team_id = t.id
+GROUP BY t.name
+ORDER BY num_employees DESC
+```
+
+
 [Bit Harder] AcmeCorp management want to send an email survey to each of their employees. However, they are worried that some of the employees may not receive the email either because their email addresses may be invalid (in that they don’t contain an ‘@’ symbol), or they may not have a stored email address at all. Can you find all these employees?
 
 
@@ -93,17 +141,217 @@ FROM employees
 WHERE email NOT LIKE '%@%' OR email IS NULL
 ```
 
+SOLUTION
 
 ```{sql connection=db_connect_3}
+SELECT * FROM employees
+WHERE email NOT LIKE '%@%' OR email IS NULL
+
+```
+
+EXTENSION
+2.1 HARDER SQL QUESTIONS
+
+Which of the employees provided the most recent feedback? What was the date of this feedback?
+
+
+```{sql connection=db_connect_3}
+
+SELECT 
+  e.id, 
+  e.first_name, 
+  e.last_name, 
+  f.date 
+FROM employees AS e INNER JOIN feedbacks AS f
+ON f.employee_id = e.id
+WHERE f.date = (SELECT MAX(date)
+                  FROM feedbacks)
+
+```
+
+You are chatting with one of the AcmeCorp employees, and she mentions that one of the teams in the corporation has some employees whose first_name contains only their first initial, e.g. “D” instead of “Dionne”, “C” instead of “Charles” (they had a really formal administrator a few years back). Can you find the name of the team that she is most likely referring to (i.e. which team has the highest number of employees with single initial first_names)`?
+
+```{sql connection=db_connect_3}
+
+SELECT 
+  COUNT(*) AS num_only_first_initial, 
+  t.name AS team_name 
+FROM employees AS e
+LEFT JOIN teams AS t
+ON e.team_id = t.id
+WHERE e.first_name LIKE '_'
+GROUP BY team_name
+ORDER BY num_only_first_initial DESC NULLS LAST
+LIMIT 1
+```
+
+
+2.2 Combining SQL and R coding - basic sentiment analysis
+
+AcmeCorp would like you to perform very basic ‘sentiment analysis’ of the stored employee feedbacks. They have provided a set of ‘positive’ and ‘negative’ words to use to score feedback messages in this analysis.
+    The score for each message should start at zero.
+    Every time a ‘positive’ word occurs in a message, the message’s score should increase by 1 point.
+    Every time a ‘negative’ word occurs in a message, the message’s score should decrease by 1 point.
+    Punctuation marks should be removed prior to scoring [Hint - the gsub() function can help here. You probably want to pass fixed = TRUE into this function].
+    Messages should also be converted to lowercase prior to scoring [Hint - the tolower() function can help here].
+
+Write R code to score all of the stored feedback messages according to these rules.
+
+SOLUTION
+
+```{r}
+
+positive_words <- c("great", "good", "happy", "content", "fulfilled", "fulfilled", "positive", "positives", "cheerful", "nice", "ambition", "ambitions", "ambitious", "friendly", "progress", "joy", "fast", "achieve", "achieving", "achievements", "best", "better",  "unlimited", "pros", "competitive", "opportunity", "advancement", "friendly", "smart", "interesting", "challenging", "grow", "caring", "balance", "helpful")
+
+negative_words <- c("worse", "worsening", "worst", "slow", "sluggish", "impatient", "unfulfilled", "unfulfilling", "negative", "bad", "limited", "limit", "limitations", "cons", "frustrated", "frustrating", "frustration", "dull", "boring", "politics", "political", "ignore", "ignored", "ignoring", "sad", "depressed", "depressing", "nasty", "stress", "stresses", "stressed", "horrid", "horrible", "terrible", "deadline", "deadlines", "uncaring", "remote")
 
 ```
 
 
-```{sql connection=db_connect_3}
+```{r}
+clean_message <- function(message){
+  message <- tolower(message)
+  # This is messy. You'll see better ways to do this later in the course
+  # We can also do something like the following, using a regular expression (regex)
+  # Regexes are also covered later!
+  # message <- gsub(message, pattern = "[[:punct:]]", replacement = " ")
+  message <- gsub(message, pattern = ",", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = ".", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = ":", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = ";", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = "!", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = "'", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = '"', replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = "(", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = ")", replacement = "", fixed = TRUE)
+  message <- gsub(message, pattern = "-", replacement = " ", fixed = TRUE)
+  message <- gsub(message, pattern = "/", replacement = " ", fixed = TRUE)
+  message <- gsub(message, pattern = "  ", replacement = " ", fixed = TRUE)
+  message <- gsub(message, pattern = "   ", replacement = " ", fixed = TRUE)
+  return(message)
+}
 
 ```
 
 
+```{r}
+score_message <- function(message, positive_words, negative_words){
+  message_words <- unlist(strsplit(message, split = " ", fixed = TRUE))
+  message_score <- 0
+  
+  for (word in positive_words){
+    message_score <- message_score + sum(message_words == word)
+  }
+  
+  for (word in negative_words){
+    message_score <- message_score - sum(message_words == word)
+  }
+  
+  return(message_score)
+}
+```
+
+This is quite a tough exercise, and in reality you wouldn’t do serious sentiment analysis in this way in R. Treat this as a coding exercise; you’ll see far better approaches with dedicated text mining packages later in the course!
+
+  First we obtained the feedbacks, with matching employees and their teams together in one dataframe.
+  Next we split our solution code into two functions: clean_message() and score_message(), and ran these successively for each message stored in the database, storing the scores as we go.
+  You will want to add the scores as a column in your dataframe containing feedbacks, employees and teams.
+
+Here are examples of running both functions on two messages
+
+```{r}
+message <- "Good company, competitive salaries, nice colleagues, good location, but the food in the canteen is just terrible!"
+message <- clean_message(message)
+message
+
+```
+
+
+```{r}
+score_message(message, positive_words, negative_words)
+```
+
+```{r}
+message <- "Really cliquey, political culture, bosses ignore any complaints (and suggestions), but good benefits package"
+message <- clean_message(message)
+message
+```
+
+```{r}
+score_message(message, positive_words, negative_words)
+```
+
+```{r}
+# get dataframe with employees, teams and feedback messages
+employees_teams_feedbacks <- dbGetQuery(db_connect_3,
+           "SELECT e.*, f.message, t.name AS team_name
+           FROM employees AS e LEFT JOIN teams AS t
+           ON e.team_id = t.id INNER JOIN feedbacks AS f
+           ON f.employee_id = e.id")
+
+# go through each message in employees_teams_feedbacks, clean and score it
+score <- numeric()
+for (message in employees_teams_feedbacks[, 'message']){
+  message <- clean_message(message)
+  message_score <- score_message(message, positive_words, negative_words)
+  score <- c(score, message_score)
+}
+
+# add the scores 
+employees_teams_feedbacks['score'] <- score
+employees_teams_feedbacks
+```
+
+
+One or more employees may have tied in providing the most positive comment(s). Can you find name(s) of the teams these employees belong to? Do the same for employees having provided the most negative comments. Remember that we want to do this programatically (i.e. by coding), rather than scanning through the scores by eye.
+We can either do this in base R
+
+SOLUTION
+
+```{r}
+selector <- employees_teams_feedbacks[, 'score'] == max(employees_teams_feedbacks[, 'score']) 
+mostpos_employees_teams <- employees_teams_feedbacks[selector, "team_name"]
+mostpos_employees_teams
+
+```
+
+```{r}
+selector <- employees_teams_feedbacks[, 'score'] == min(employees_teams_feedbacks[, 'score']) 
+mostneg_employees_teams <- employees_teams_feedbacks[selector, "team_name"]
+mostneg_employees_teams
+```
+
+or, alternatively, we can use sqldf
+
+```{r}
+install.packages("sqldf")
+
+```
+
+```{r}
+detach("package:RPostgreSQL", unload = TRUE)
+library(sqldf)
+```
+
+```{r}
+teams_mostpos_employees_querystring <- "SELECT team_name
+                                        FROM employees_teams_feedbacks
+                                        WHERE score = (SELECT MAX(score)
+                                        FROM employees_teams_feedbacks)"
+
+mostpos_employees_teams <- sqldf(teams_mostpos_employees_querystring)
+mostpos_employees_teams
+```
+
+```{r}
+teams_mostneg_employees_querystring <- "SELECT team_name
+                                        FROM employees_teams_feedbacks
+                                        WHERE SCORE = (SELECT MIN(score)
+                                        FROM employees_teams_feedbacks)"
+
+mostneg_employees_teams <- sqldf(teams_mostneg_employees_querystring)
+mostneg_employees_teams
+```
 
 
 Run at the end to dicsonnect from the database
@@ -113,4 +361,5 @@ Run at the end to dicsonnect from the database
 dbDisconnect(db_connect_3)
 
 ```
+
 

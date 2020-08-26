@@ -1,0 +1,144 @@
+---
+title: "Mini-Lab - Data Quality Answers"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+# Introduction
+
+Now is a chance to practice defining, documenting and coding our own data quality rules.
+
+Have a look at the `contractsregister.csv` file which comes from [Aberdeen Council's open data portal](https://www.aberdeenshire.gov.uk/online/open-data/).
+
+# MVP - Defining and coding data quality rules
+**Task - 1 hour**
+
+## Business Statement
+
+We are going to start by writing 3 business statements. Ensure they explain the required rule and the context as to why this is important for the business.
+
+1. Write a statement ensuring the DateOfAward is populated
+
+2. Write a statement ensuring that DateOfAward is in the past and is formatted correctly
+
+3. Write a statement ensuring that the ContractValue is a positive numeric value
+
+<details>
+<summary>**Answers**</summary>
+
+1. The date of award cannot be empty as this is a mandatory system field
+
+2. The date of award should be a valid date formatted dd/mm/yyyy. The value should be either today's date or in the past. This field is used to identify when contracts require review.
+
+3. The contract value must be populated with a positive numeric value. Negative or zero contract values are not valid.
+
+</details>
+
+## Rule Specification
+
+Now for each business statement write rule(s) explaining the test that is being carried out. Ensure you can map each rule to the DQ dimension it is checking.
+
+<details>
+<summary>**Hint**</summary>
+
+You may need more than one rule per business statement
+
+</details>
+
+<details>
+<summary>**Answers**</summary>
+
+1a. DateOfAward not empty or equal to "(blank)" - **completeness**
+
+2a. DateOfAward should be formatted as 'dd/mm/yyyy' and should be a valid date - **validity**
+
+2b. DateOfAward should be today's date or in the past - **validity**
+
+3a. The ContractValue is not empty - **completeness**
+
+3b. The ContactValue is greater than zero - **validity**
+
+</details>
+
+## The coded rules
+
+For each data quality rule defined above, write `R-code` that can be used to test that rule.
+
+You may want to use this function, which checks if a date is invalid:
+
+```{r}
+is_invalid_date <- function(date){
+ 
+  parsed_date <- try(as.Date(date, format= "%d/%m/%Y"))
+  
+  return(inherits(parsed_date, "try-error") | is.na(parsed_date))
+}
+```
+
+And this function, which checks if a date is in the past:
+
+```{r}
+is_in_past <- function(date){
+  
+  return(lubridate::dmy(date) <= lubridate::today())
+  
+}
+```
+
+Don't worry if you don't understand the code! We'll learn about dates and times in week 3.
+
+<details>
+<summary>**Answers**</summary>
+
+```{r}
+library(readr)
+library(lubridate)
+
+contracts <- read_csv("data/contractsregister.csv")
+
+rule1a <- contracts$DateOfAward == "(blank)" |
+  contracts$DateOfAward == "" |
+  is.na(contracts$DateOfAward)
+
+rule2a <- is_invalid_date(contracts$DateOfAward)
+
+rule2b <- rule2a | !is_in_past(contracts$DateOfAward)
+
+rule3a <- is.na(contracts$ContractValue)
+
+rule3b <- contracts$ContractValue <= 0  
+```
+
+
+</details>
+
+
+## Summary statistics 
+
+Create summary statistics, showing the volumes that fail each of the rules you have defined.
+
+<details>
+<summary>**Answers**</summary>
+
+```{r}
+sum(rule1a)
+sum(rule2a)
+sum(rule2b)
+sum(rule3a)
+sum(rule3b)
+```
+
+</details>
+
+
+
+
+
+
+

@@ -1752,27 +1752,75 @@ summary {
 <p>2.2.1 MULTIPLY number by 15 and add 4 to give output</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgU2V0IHogdG8gbnVtYmVyIDQgYW5kIHkgdG8gbnVtYmVyIDMgYW5kIHdyb3RlIGlmIGNvZGUgdGhhdCBzdGF0ZXMgaWYgeSBpcyBncmVhdGVyIHRoYW4gb3IgZXF1YWwgdG8gMCwgdGhlbiB0aGUgbnVtYmVyIHdpbGwgYmUgbXVsdGlwbGllZCBieSAxNSBhbmQgdGhlbiA0IHdpbGwgYncgYWRkZWQgb25cblxueiA8LSA0XG5cbnkgPC0gMVxuXG5pZiAoeSA+PSAwKSB7XG4gIHkgKiAxNSArIHpcbn1cbmBgYCJ9 -->
-<pre class="r"><code>## Set z to number 4 and y to number 3 and wrote if code that states if y is greater than or equal to 0, then the number will be multiplied by 15 and then 4 will bw added on
-
-z &lt;- 4
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueiA8LSA0XG5cbnkgPC0gMVxuXG5pZiAoeSA+PSAwKSB7XG4gIHkgKiAxNSArIHpcbn1cblxuYGBgIn0= -->
+<pre class="r"><code>z &lt;- 4
 
 y &lt;- 1
 
 if (y &gt;= 0) {
   y * 15 + z
-}</code></pre>
+}
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDE5XG4ifQ== -->
 <pre><code>[1] 19</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAgIFxuXG5cbmBgYCJ9 -->
-<pre class="r"><code>    
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAgXG5gYGAifQ== -->
+<pre class="r"><code>   </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>SOLUTION</p>
+<p>Write a function which multiples all numbers by 15 and adds 4.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGltZXNfMTVfYWRkXzQgPC0gZnVuY3Rpb24oeCkge1xuICB4ICogMTUgKyA0XG59XG5gYGAifQ== -->
+<pre class="r"><code>times_15_add_4 &lt;- function(x) {
+  x * 15 + 4
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>2.2.1 Write a function tht returns &quot;bird, if the input is goose, duck or pigeon and returns not bird for everythign else</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfYW5pbWFscyA8LSBjKFwiZ29vc2VcIiwgXCJkdWNrXCIsIFwiUGlnZW9uXCIpXG5cbiMjIGNyZWF0ZWQgYSB2ZWN0b3IgZm9yIHRoZSBlcXVpcmVkIGFuaW1hbHMgdGhhdCBhcmUgdG8gcmV0dXJuIHRoZSBiaXJkIHN0YXRlbWVudFxuXG5pZihcImdvb3NlXCIgJWluJSBteV9hbmltYWxzKXtcbiAgcHJpbnQoXCJiaXJkXCIpIFxuICAjIyBpZiBnb29zZSBpcyBpbnB1dCBvciBhbnkgb2YgdGhlIGFuaW1hbHMgaW4gdGhlIHZlY3RvciBhYm92ZSB0aGlzIGNvbmRpdGlvbiB3aWxsIGJlIG1ldCBhbmQgYmlyZCB3aWxsIGJlIHByaW50ZWRcbn0gZWxzZSB7XG4gICAgcHJpbnQoXCJub3QgYSBiaXJkXCIpXG4gICMjIGFueXRoaW5nIGVsc2Ugb3V0c2lkZSB0aGUgdmVjdG9yIHdpbCBtZWVkIHRoaXMgY29uZGl0aW9uIGFuZCByZXR1cm4gbm90IGEgYmlyZFxufVxuXG5gYGAifQ== -->
+<pre class="r"><code>my_animals &lt;- c(&quot;goose&quot;, &quot;duck&quot;, &quot;Pigeon&quot;)
+
+## created a vector for the equired animals that are to return the bird statement
+
+if(&quot;goose&quot; %in% my_animals){
+  print(&quot;bird&quot;) 
+  ## if goose is input or any of the animals in the vector above this condition will be met and bird will be printed
+} else {
+    print(&quot;not a bird&quot;)
+  ## anything else outside the vector wil meed this condition and return not a bird
+}
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYmlyZFwiXG4ifQ== -->
+<pre><code>[1] &quot;bird&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>SOLUTION</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXNfYmlyZCA8LSBmdW5jdGlvbih4KSB7XG4gIGlmICh4ICVpbiUgYyhcImdvb3NlXCIsIFwiZHVja1wiLCBcInBpZ2VvblwiKSkge1xuICAgIHJldHVybihcImJpcmRcIilcbiAgfSBlbHNlIHtcbiAgICByZXR1cm4oXCJub3QgYmlyZFwiKVxuICB9XG59XG5cbmBgYCJ9 -->
+<pre class="r"><code>is_bird &lt;- function(x) {
+  if (x %in% c(&quot;goose&quot;, &quot;duck&quot;, &quot;pigeon&quot;)) {
+    return(&quot;bird&quot;)
+  } else {
+    return(&quot;not bird&quot;)
+  }
+}
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>2.2.1 Write a function tht returns &quot;bird, if the input is goose, duck or pigeon and returns not burd for everythign else</p>
+<p>2.2.3 write a function that muliplies all numbers by 10, if the input isnt a number the functiton should return “invalid input”</p>
+<div id="there-will-be-a-loop-needed." class="section level2">
+<h2>there will be a loop needed.</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgdGhpcyBpd2xsIG11bHRpcGx5IGFuZCBudW1iZXIgZ3JlYXRlciB0aGFuIDAgYnkgMTAsIGlmIDAgb3IgYW55IG5lZ2F0aXZlIG51bWJlciBpcyBpbnB1dCB0aGlzIHdpbGwgcHVsbCBtZXNzYWdlXG5cbnkgPC0gMFxuXG5cbmlmICh5ID4gMCkge1xuICB5ICogMTBcbn0gZWxzZVxuICBwcmludChcImludmFsaWQgaW5wdXRcIilcbmBgYCJ9 -->
@@ -1791,37 +1839,38 @@ if (y &gt; 0) {
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>SOLUTION</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5teV9hbmltYWxzIDwtIGMoXCJnb29zZVwiLCBcImR1Y2tcIiwgXCJQaWdlb25cIilcblxuIyMgY3JlYXRlZCBhIHZlY3RvciBmb3IgdGhlIGVxdWlyZWQgYW5pbWFscyB0aGF0IGFyZSB0byByZXR1cm4gdGhlIGJpcmQgc3RhdGVtZW50XG5cbmlmKFwiZ29vc2VcIiAlaW4lIG15X2FuaW1hbHMpe1xuICBwcmludChcImJpcmRcIikgXG4gICMjIGlmIGdvb3NlIGlzIGlucHV0IG9yIGFueSBvZiB0aGUgYW5pbWFscyBpbiB0aGUgdmVjdG9yIGFib3ZlIHRoaXMgY29uZGl0aW9uIHdpbGwgYmUgbWV0IGFuZCBiaXJkIHdpbGwgYmUgcHJpbnRlZFxufSBlbHNlIHtcbiAgICBwcmludChcIm5vdCBhIGJpcmRcIilcbiAgIyMgYW55dGhpbmcgZWxzZSBvdXRzaWRlIHRoZSB2ZWN0b3Igd2lsIG1lZWQgdGhpcyBjb25kaXRpb24gYW5kIHJldHVybiBub3QgYSBiaXJkXG59XG5gYGAifQ== -->
-<pre class="r"><code>
-my_animals &lt;- c(&quot;goose&quot;, &quot;duck&quot;, &quot;Pigeon&quot;)
-
-## created a vector for the equired animals that are to return the bird statement
-
-if(&quot;goose&quot; %in% my_animals){
-  print(&quot;bird&quot;) 
-  ## if goose is input or any of the animals in the vector above this condition will be met and bird will be printed
-} else {
-    print(&quot;not a bird&quot;)
-  ## anything else outside the vector wil meed this condition and return not a bird
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGltZXNfMTAgPC0gZnVuY3Rpb24oeCkge1xuICBpZiAoaXMubnVtZXJpYyh4KSkge1xuICAgIHJldHVybih4ICogMTApXG4gIH0gZWxzZSB7XG4gICAgcmV0dXJuKFwiSW52YWxpZCBpbnB1dFwiKVxuICB9XG59XG5gYGAifQ== -->
+<pre class="r"><code>times_10 &lt;- function(x) {
+  if (is.numeric(x)) {
+    return(x * 10)
+  } else {
+    return(&quot;Invalid input&quot;)
+  }
 }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYmlyZFwiXG4ifQ== -->
-<pre><code>[1] &quot;bird&quot;</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>2.2.3 write a function that muliplies all numbers by 10, if the input isnt a number the functiton should return “invalid input”</p>
-<div id="there-will-be-a-loop-needed." class="section level2">
-<h2>there will be a loop needed.</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KGRwbHlyKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KGRwbHlyKVxuYGBgIn0= -->
 <pre class="r"><code>
-library(dplyr)
-</code></pre>
+library(dplyr)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDigJhkcGx5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNi4yXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgZmlsdGVyLCBsYWdcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBpbnRlcnNlY3QsIHNldGRpZmYsIHNldGVxdWFsLCB1bmlvblxuIn0= -->
+<pre><code>package ‘dplyr’ was built under R version 3.6.2
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>2.3.1 for the vector below, make a new vector which is equal to “big” everytime the element of sizes is greater than 10 and equal to “small” everytime the element of sizes is less than or equal to 10</p>
@@ -1854,6 +1903,40 @@ ifelse(sizes &lt;= 10, &quot;Small&quot;, &quot;Big&quot;)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>SOLUTION</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2l6ZXMgPC0gYygxMywgMTUsIDEwLCA4LCAyMilcblxuIyBpZmVsc2VcbmlmZWxzZShzaXplcyA+IDEwLCBcIkJpZ1wiLCBcIlNtYWxsXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code>sizes &lt;- c(13, 15, 10, 8, 22)
+
+# ifelse
+ifelse(sizes &gt; 10, &quot;Big&quot;, &quot;Small&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>RECODE</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyByZWNvZGVcbnJlY29kZShzaXplcywgYDEwYCA9IFwiU21hbGxcIiwgYDhgID0gXCJTbWFsbFwiLCAuZGVmYXVsdCA9IFwiQmlnXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code># recode
+recode(sizes, `10` = &quot;Small&quot;, `8` = &quot;Small&quot;, .default = &quot;Big&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>CASE WHEN</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjYXNlX3doZW5cbmNhc2Vfd2hlbihcbiAgc2l6ZXMgPiAxMCB+IFwiQmlnXCIsXG4gIFRSVUUgfiBcIlNtYWxsXCJcbilcbmBgYCJ9 -->
+<pre class="r"><code># case_when
+case_when(
+  sizes &gt; 10 ~ &quot;Big&quot;,
+  TRUE ~ &quot;Small&quot;
+)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>2.3.2 For the vector below convert: apple - alpaca, banana- bonobo, cherry - chipmunk</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
@@ -1870,13 +1953,53 @@ Levels: alpaca bonono chipmunk</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>SOLUTION</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnJ1aXQgPC0gYyhcImFwcGxlXCIsIFwiYXBwbGVcIiwgXCJiYW5hbmFcIiwgXCJjaGVycnlcIiwgXCJjaGVycnlcIilcblxuIyBpZiBlbHNlXG5hbmltYWxzIDwtIGlmZWxzZShmcnVpdCA9PSBcImFwcGxlXCIsIFwiYWxwYWNhXCIsIGZydWl0KVxuYW5pbWFscyA8LSBpZmVsc2UoYW5pbWFscyA9PSBcImJhbmFuYVwiLCBcImJvbm9ib1wiLCBhbmltYWxzKVxuaWZlbHNlKGFuaW1hbHMgPT0gXCJjaGVycnlcIiwgXCJjaGlwbXVua1wiLCBhbmltYWxzKVxuYGBgIn0= -->
+<pre class="r"><code>fruit &lt;- c(&quot;apple&quot;, &quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;, &quot;cherry&quot;)
+
+# if else
+animals &lt;- ifelse(fruit == &quot;apple&quot;, &quot;alpaca&quot;, fruit)
+animals &lt;- ifelse(animals == &quot;banana&quot;, &quot;bonobo&quot;, animals)
+ifelse(animals == &quot;cherry&quot;, &quot;chipmunk&quot;, animals)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYWxwYWNhXCIgICBcImFscGFjYVwiICAgXCJib25vYm9cIiAgIFwiY2hpcG11bmtcIiBcImNoaXBtdW5rXCJcbiJ9 -->
+<pre><code>[1] &quot;alpaca&quot;   &quot;alpaca&quot;   &quot;bonobo&quot;   &quot;chipmunk&quot; &quot;chipmunk&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyByZWNvZGVcbnJlY29kZShmcnVpdCwgYXBwbGUgPSBcImFscGFjYVwiLCBiYW5hbmEgPSBcImJvbm9ib1wiLCBjaGVycnkgPSBcImNoaXBtdW5rXCIpXG5gYGAifQ== -->
+<pre class="r"><code># recode
+recode(fruit, apple = &quot;alpaca&quot;, banana = &quot;bonobo&quot;, cherry = &quot;chipmunk&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYWxwYWNhXCIgICBcImFscGFjYVwiICAgXCJib25vYm9cIiAgIFwiY2hpcG11bmtcIiBcImNoaXBtdW5rXCJcbiJ9 -->
+<pre><code>[1] &quot;alpaca&quot;   &quot;alpaca&quot;   &quot;bonobo&quot;   &quot;chipmunk&quot; &quot;chipmunk&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjYXNlX3doZW5cbmNhc2Vfd2hlbihcbiAgZnJ1aXQgPT0gXCJhcHBsZVwiIH4gXCJhbHBhY2FcIixcbiAgZnJ1aXQgPT0gXCJiYW5hbmFcIiB+IFwiYm9ub2JvXCIsXG4gIGZydWl0ID09IFwiY2hlcnJ5XCIgfiBcImNoaXBtdW5rXCJcbilcbmBgYCJ9 -->
+<pre class="r"><code># case_when
+case_when(
+  fruit == &quot;apple&quot; ~ &quot;alpaca&quot;,
+  fruit == &quot;banana&quot; ~ &quot;bonobo&quot;,
+  fruit == &quot;cherry&quot; ~ &quot;chipmunk&quot;
+)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>2.3.3 the two vectors below show the ages at marriage of each member of a couple, the first element of each vector corresponds to the first couple, the second elements to the second couple</p>
 <p>creat a new vector which is equal to</p>
 <p>“Wife older” whenever the wifes ages is the highest. “Husband older” when the husbands age is the highest, “Same age” when they are the same age</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG53aWZlX2FnZSA8LSBjKDI5TCwgMzBMLCAzNkwsIDMxTCwgMjJMKVxuXG5odXNiYW5kX2FnZSA8LSBjKDI4TCwgMzVMLCAzMkwsIDMxTCwgMjlMKVxuXG5gYGAifQ== -->
-<pre class="r"><code>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgdGhpcyBpcyB0aGUgdmVjb3RzIGNyZWFzdGVkIGZvciBodXNiYW5kIGFnZSBhbmQgd2lmZSBhZ2Vcblxud2lmZV9hZ2UgPC0gYygyOUwsIDMwTCwgMzZMLCAzMUwsIDIyTClcblxuaHVzYmFuZF9hZ2UgPC0gYygyOEwsIDM1TCwgMzJMLCAzMUwsIDI5TClcblxuYGBgIn0= -->
+<pre class="r"><code>## this is the vecots creasted for husband age and wife age
+
 wife_age &lt;- c(29L, 30L, 36L, 31L, 22L)
 
 husband_age &lt;- c(28L, 35L, 32L, 31L, 29L)
@@ -1886,7 +2009,7 @@ husband_age &lt;- c(28L, 35L, 32L, 31L, 29L)
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jYXNlX3doZW4oXG4gIHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UgfiBcIldpZmUgb2xkZXN0XCIsXG4gICMjIHRoaXMgYnJpbmdzIGJhY2sgdGhlIHdpZmUgb2xkZXN0IGF0IHRoZSBvbGRlc3QgcG9pbnRcbiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+IFwiaHVzYmFuZCBvbGRlc3RcIixcbiAgIyMgdGhpcyByZXR1cm5zIHRoZSBodXNiYW5kIG9sZGVzdCBhdCBvbGRlc3QgYWdlc1xuICB3aWZlX2FnZSA9PSBodXNiYW5kX2FnZSAgfiBcInNhbWVcIiwgXG4gICMjIHRoaXMgZ2l2ZXMgdGhlIHNhbWVcbilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jYXNlX3doZW4oXG4gIHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UgfiBcIldpZmUgb2xkZXN0XCIsXG4gICMjIHRoaXMgYnJpbmdzIGJhY2sgdGhlIHdpZmUgb2xkZXN0IGF0IHRoZSBvbGRlc3QgcG9pbnRcbiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+IFwiaHVzYmFuZCBvbGRlc3RcIixcbiAgIyMgdGhpcyByZXR1cm5zIHRoZSBodXNiYW5kIG9sZGVzdCBhdCBvbGRlc3QgYWdlc1xuICB3aWZlX2FnZSA9PSBodXNiYW5kX2FnZSAgfiBcInNhbWVcIiwgXG4gICMjIHRoaXMgZ2l2ZXMgdGhlIHNhbWVcbilcbiAgXG5gYGAifQ== -->
 <pre class="r"><code>
 case_when(
   wife_age &gt; husband_age ~ &quot;Wife oldest&quot;,
@@ -1895,22 +2018,68 @@ case_when(
   ## this returns the husband oldest at oldest ages
   wife_age == husband_age  ~ &quot;same&quot;, 
   ## this gives the same
+)
+  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>SOLUTION</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2lmZV9hZ2UgPC0gYygyOUwsIDMwTCwgMzZMLCAzMUwsIDIyTClcbmh1c2JhbmRfYWdlIDwtIGMoMjhMLCAzNUwsIDMyTCwgMzFMLCAyOUwpXG5gYGAifQ== -->
+<pre class="r"><code>wife_age &lt;- c(29L, 30L, 36L, 31L, 22L)
+husband_age &lt;- c(28L, 35L, 32L, 31L, 29L)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBpZmVsc2VcbmlmZWxzZSh3aWZlX2FnZSA+IGh1c2JhbmRfYWdlLCBcIldpZmUgb2xkZXJcIiwgaWZlbHNlKHdpZmVfYWdlIDwgaHVzYmFuZF9hZ2UsIFwiSHVzYmFuZCBvbGRlclwiLCBcIlNhbWUgYWdlXCIpKVxuYGBgIn0= -->
+<pre class="r"><code># ifelse
+ifelse(wife_age &gt; husband_age, &quot;Wife older&quot;, ifelse(wife_age &lt; husband_age, &quot;Husband older&quot;, &quot;Same age&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiV2lmZSBvbGRlclwiICAgIFwiSHVzYmFuZCBvbGRlclwiIFwiV2lmZSBvbGRlclwiICAgIFwiU2FtZSBhZ2VcIiAgICAgXG5bNV0gXCJIdXNiYW5kIG9sZGVyXCJcbiJ9 -->
+<pre><code>[1] &quot;Wife older&quot;    &quot;Husband older&quot; &quot;Wife older&quot;    &quot;Same age&quot;     
+[5] &quot;Husband older&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHJlY29kZVxuZGlmZmVyZW5jZSA8LSBzaWduKHdpZmVfYWdlIC0gaHVzYmFuZF9hZ2UpXG5yZWNvZGUoZGlmZmVyZW5jZSwgYDFgID0gXCJXaWZlIG9sZGVyXCIsIGAwYCA9IFwiU2FtZSBhZ2VcIiwgYC0xYCA9IFwiSHVzYmFuZCBvbGRlclwiKVxuYGBgIn0= -->
+<pre class="r"><code>
+# recode
+difference &lt;- sign(wife_age - husband_age)
+recode(difference, `1` = &quot;Wife older&quot;, `0` = &quot;Same age&quot;, `-1` = &quot;Husband older&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiV2lmZSBvbGRlclwiICAgIFwiSHVzYmFuZCBvbGRlclwiIFwiV2lmZSBvbGRlclwiICAgIFwiU2FtZSBhZ2VcIiAgICAgXG5bNV0gXCJIdXNiYW5kIG9sZGVyXCJcbiJ9 -->
+<pre><code>[1] &quot;Wife older&quot;    &quot;Husband older&quot; &quot;Wife older&quot;    &quot;Same age&quot;     
+[5] &quot;Husband older&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjYXNlX3doZW5cbmNhc2Vfd2hlbihcbiAgd2lmZV9hZ2UgPiBodXNiYW5kX2FnZSB+IFwiV2lmZSBvbGRlclwiLFxuICB3aWZlX2FnZSA8IGh1c2JhbmRfYWdlIH4gXCJIdXNiYW5kIG9sZGVyXCIsXG4gIHdpZmVfYWdlID09IGh1c2JhbmRfYWdlIH4gXCJTYW1lIGFnZVwiXG4pXG5gYGAifQ== -->
+<pre class="r"><code># case_when
+case_when(
+  wife_age &gt; husband_age ~ &quot;Wife older&quot;,
+  wife_age &lt; husband_age ~ &quot;Husband older&quot;,
+  wife_age == husband_age ~ &quot;Same age&quot;
 )</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiV2lmZSBvbGRlc3RcIiAgICBcImh1c2JhbmQgb2xkZXN0XCIgXCJXaWZlIG9sZGVzdFwiICAgIFwic2FtZVwiICAgICAgICAgICBcImh1c2JhbmQgb2xkZXN0XCJcbiJ9 -->
-<pre><code>[1] &quot;Wife oldest&quot;    &quot;husband oldest&quot; &quot;Wife oldest&quot;    &quot;same&quot;           &quot;husband oldest&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiV2lmZSBvbGRlclwiICAgIFwiSHVzYmFuZCBvbGRlclwiIFwiV2lmZSBvbGRlclwiICAgIFwiU2FtZSBhZ2VcIiAgICAgXG5bNV0gXCJIdXNiYW5kIG9sZGVyXCJcbiJ9 -->
+<pre><code>[1] &quot;Wife older&quot;    &quot;Husband older&quot; &quot;Wife older&quot;    &quot;Same age&quot;     
+[5] &quot;Husband older&quot;</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
-<pre class="r"><code>  </code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>2.4.1 Use a loop to print out every element of my_ist which is type character</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIyBjcmVhdGVkIGFuIGFwcGxlIGFzIGNoYXJhY3RlciBmdW5jdGlvbiB0byBwdWxsIHRoZSBjaGFyYWN0ZWRcblxuYXBwbGUgPC0gYXMuY2hhcmFjdGVyKFwiYXBwbGVcIilcblxubXlfbGlzdCA8LSBsaXN0KFxuICA0LFxuICBcImFwcGxlXCIsXG4gIDEwLjUsXG4gIGMoXCJpc1wiLCBcImFuXCIsIFwiYXBwbGVcIiksXG4gIFwiYXBwbGVcIixcbiAgYyhcImlcIiwgXCJsaWtlXCIsIFwiYXBwbGVzXCIpLFxuICA4XG4pXG5cblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIyBjcmVhdGVkIGFuIGFwcGxlIGFzIGNoYXJhY3RlciBmdW5jdGlvbiB0byBwdWxsIHRoZSBjaGFyYWN0ZSBwYXJ0IG9mIHRoZSBsaXN0XG5cbmFwcGxlIDwtIGFzLmNoYXJhY3RlcihcImFwcGxlXCIpXG5cbm15X2xpc3QgPC0gbGlzdChcbiAgNCxcbiAgXCJhcHBsZVwiLFxuICAxMC41LFxuICBjKFwiaXNcIiwgXCJhblwiLCBcImFwcGxlXCIpLFxuICBcImFwcGxlXCIsXG4gIGMoXCJpXCIsIFwibGlrZVwiLCBcImFwcGxlc1wiKSxcbiAgOFxuKVxuXG5cbmBgYCJ9 -->
 <pre class="r"><code>
-## created an apple as character function to pull the characted
+## created an apple as character function to pull the characte part of the list
 
 apple &lt;- as.character(&quot;apple&quot;)
 
@@ -1976,6 +2145,7 @@ length_list &lt;- length(my_list)
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>SOLUTION</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5mb3IgKGVsZW0gaW4gbXlfbGlzdCkge1xuICBpZiAoaXMuY2hhcmFjdGVyKGVsZW0pKSB7XG4gICAgaWYgKGxlbmd0aChlbGVtKSA+IDEpIHtcbiAgICAgIHByaW50KHBhc3RlKGVsZW0sIGNvbGxhcHNlID0gXCIgXCIpKVxuICAgIH0gZWxzZSB7XG4gICAgICBwcmludChlbGVtKVxuICAgIH1cbiAgfVxufVxuYGBgIn0= -->
@@ -2010,8 +2180,8 @@ for (i in length_list) {
   print(phrase)
 }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiaXMgYW4gIGkgbGlrZSBhcHBsZXMgMVwiXG4ifQ== -->
-<pre><code>[1] &quot;is an  i like apples 1&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiaXMgYW4gIGkgbGlrZSBhcHBsZXMgTkFcIlxuIn0= -->
+<pre><code>[1] &quot;is an  i like apples NA&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyN0aGUgZm9yIGxvb3AgYWxsb3cgdGhlIGNvZGUgdG8gam9pbiB0aGUgdmVjdG9ycyB0b2dldGhlciBieSBsZW5ndGhcblxuYGBgIn0= -->
 <pre class="r"><code>##the for loop allow the code to join the vectors together by length
@@ -2036,10 +2206,138 @@ for(i in 1:length(my_list)){
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>EXTENSION- PUZZLES</p>
+<p>3.1</p>
+<p>Write code that prints a multiplication table for numbers up to 12. i.e. there will be 12 rows and 12 columns, and each element should be the row number multiplied by the column number.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWF0cml4KDE6MTIpICUqJSB0KG1hdHJpeCgxOjEyKSlcbmBgYCJ9 -->
+<pre class="r"><code>matrix(1:12) %*% t(matrix(1:12))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgWywxXSBbLDJdIFssM10gWyw0XSBbLDVdIFssNl0gWyw3XSBbLDhdIFssOV0gWywxMF0gWywxMV0gWywxMl1cbiBbMSxdICAgIDEgICAgMiAgICAzICAgIDQgICAgNSAgICA2ICAgIDcgICAgOCAgICA5ICAgIDEwICAgIDExICAgIDEyXG4gWzIsXSAgICAyICAgIDQgICAgNiAgICA4ICAgMTAgICAxMiAgIDE0ICAgMTYgICAxOCAgICAyMCAgICAyMiAgICAyNFxuIFszLF0gICAgMyAgICA2ICAgIDkgICAxMiAgIDE1ICAgMTggICAyMSAgIDI0ICAgMjcgICAgMzAgICAgMzMgICAgMzZcbiBbNCxdICAgIDQgICAgOCAgIDEyICAgMTYgICAyMCAgIDI0ICAgMjggICAzMiAgIDM2ICAgIDQwICAgIDQ0ICAgIDQ4XG4gWzUsXSAgICA1ICAgMTAgICAxNSAgIDIwICAgMjUgICAzMCAgIDM1ICAgNDAgICA0NSAgICA1MCAgICA1NSAgICA2MFxuIFs2LF0gICAgNiAgIDEyICAgMTggICAyNCAgIDMwICAgMzYgICA0MiAgIDQ4ICAgNTQgICAgNjAgICAgNjYgICAgNzJcbiBbNyxdICAgIDcgICAxNCAgIDIxICAgMjggICAzNSAgIDQyICAgNDkgICA1NiAgIDYzICAgIDcwICAgIDc3ICAgIDg0XG4gWzgsXSAgICA4ICAgMTYgICAyNCAgIDMyICAgNDAgICA0OCAgIDU2ICAgNjQgICA3MiAgICA4MCAgICA4OCAgICA5NlxuIFs5LF0gICAgOSAgIDE4ICAgMjcgICAzNiAgIDQ1ICAgNTQgICA2MyAgIDcyICAgODEgICAgOTAgICAgOTkgICAxMDhcblsxMCxdICAgMTAgICAyMCAgIDMwICAgNDAgICA1MCAgIDYwICAgNzAgICA4MCAgIDkwICAgMTAwICAgMTEwICAgMTIwXG5bMTEsXSAgIDExICAgMjIgICAzMyAgIDQ0ICAgNTUgICA2NiAgIDc3ICAgODggICA5OSAgIDExMCAgIDEyMSAgIDEzMlxuWzEyLF0gICAxMiAgIDI0ICAgMzYgICA0OCAgIDYwICAgNzIgICA4NCAgIDk2ICAxMDggICAxMjAgICAxMzIgICAxNDRcbiJ9 -->
+<pre><code>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
+ [1,]    1    2    3    4    5    6    7    8    9    10    11    12
+ [2,]    2    4    6    8   10   12   14   16   18    20    22    24
+ [3,]    3    6    9   12   15   18   21   24   27    30    33    36
+ [4,]    4    8   12   16   20   24   28   32   36    40    44    48
+ [5,]    5   10   15   20   25   30   35   40   45    50    55    60
+ [6,]    6   12   18   24   30   36   42   48   54    60    66    72
+ [7,]    7   14   21   28   35   42   49   56   63    70    77    84
+ [8,]    8   16   24   32   40   48   56   64   72    80    88    96
+ [9,]    9   18   27   36   45   54   63   72   81    90    99   108
+[10,]   10   20   30   40   50   60   70   80   90   100   110   120
+[11,]   11   22   33   44   55   66   77   88   99   110   121   132
+[12,]   12   24   36   48   60   72   84   96  108   120   132   144</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>3.2</p>
+<p>Write a function that takes a vector, and creates a text art histogram, like the one below.</p>
+<p>You may want to use the function cat(). This is similar to print(), but prints directly, without vector markers. You can also include newlines “” when using cat().</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFrZV9oaXN0b2dyYW0gPC0gZnVuY3Rpb24oeCl7XG4gIFxuICBkaXN0aW5jdCA8LSBzb3J0KHVuaXF1ZSh4KSlcbiAgXG4gIGZvciAoaSBpbiBkaXN0aW5jdCl7XG4gICAgXG4gICAgY291bnQgPC0gc3VtKHggPT0gaSlcbiAgICBcbiAgICBjYXQoaSlcbiAgICBjYXQoXCIgfCBcIilcbiAgICBjYXQocmVwKFwiKlwiLCBjb3VudCkpXG4gICAgY2F0KFwiXFxuXCIpXG4gICAgXG4gIH1cbiAgXG59XG5gYGAifQ== -->
+<pre class="r"><code>make_histogram &lt;- function(x){
+  
+  distinct &lt;- sort(unique(x))
+  
+  for (i in distinct){
+    
+    count &lt;- sum(x == i)
+    
+    cat(i)
+    cat(&quot; | &quot;)
+    cat(rep(&quot;*&quot;, count))
+    cat(&quot;\n&quot;)
+    
+  }
+  
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>3.3</p>
+<p>Write a guessing game where the user has to guess a secret number. After every guess the program tells the user whether their number was too large or too small. At the end the number of tries needed should be printed.</p>
+<p>To take user input, use the function readline(). Whenever R encounters readline, the code will stop, and the value assigned from readline will depend on the value that the user inputs. For more information see the help file.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnVtYmVyIDwtIHJvdW5kKHJ1bmlmKDEsIDEsIDEwKSlcblxuZ3Vlc3NlZCA8LSBGQUxTRVxuYXR0ZW1wdHMgPC0gMFxuXG53aGlsZSAoIWd1ZXNzZWQpe1xuICBcbiAgcHJpbnQoXCJHdWVzcyBhIG51bWJlciBiZXR3ZWVuIDEgYW5kIDEwIVwiKVxuICBcbiAgZ3Vlc3MgPC0gcmVhZGxpbmUoXCJcIilcbiAgXG4gIGlmIChndWVzcyA+IG51bWJlcil7XG4gICAgXG4gICAgcHJpbnQoXCJHdWVzcyBpcyB0b28gaGlnaFwiKVxuICAgIFxuICAgIGF0dGVtcHRzIDwtIGF0dGVtcHMgKyAxXG4gICAgXG4gIH1cbiAgXG4gIGlmIChndWVzcyA8IG51bWJlcil7XG4gICAgXG4gICAgcHJpbnQoXCJHdWVzcyB0b28gbG93XCIpXG4gICAgXG4gICAgYXR0ZW1wdHMgPC0gYXR0ZW1wdHMgKyAxXG4gICAgXG4gIH1cbiAgXG4gIGlmIChndWVzcyA9PSBudW1iZXIpe1xuICAgIFxuICAgIHByaW50KFwiR3Vlc3MgaXMgcmlnaHQhIFdlbGwgZG9uZSFcIilcbiAgICBcbiAgICBwcmludChwYXN0ZShcIkF0dGVtcHRzOlwiLCBhdHRlbXB0cykpXG4gICAgXG4gICAgZ3Vlc3NlZCA8LSBUUlVFXG4gICAgXG4gIH1cbiAgXG59XG5gYGAifQ== -->
+<pre class="r"><code>number &lt;- round(runif(1, 1, 10))
+
+guessed &lt;- FALSE
+attempts &lt;- 0
+
+while (!guessed){
+  
+  print(&quot;Guess a number between 1 and 10!&quot;)
+  
+  guess &lt;- readline(&quot;&quot;)
+  
+  if (guess &gt; number){
+    
+    print(&quot;Guess is too high&quot;)
+    
+    attempts &lt;- attemps + 1
+    
+  }
+  
+  if (guess &lt; number){
+    
+    print(&quot;Guess too low&quot;)
+    
+    attempts &lt;- attempts + 1
+    
+  }
+  
+  if (guess == number){
+    
+    print(&quot;Guess is right! Well done!&quot;)
+    
+    print(paste(&quot;Attempts:&quot;, attempts))
+    
+    guessed &lt;- TRUE
+    
+  }
+  
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiR3Vlc3MgYSBudW1iZXIgYmV0d2VlbiAxIGFuZCAxMCFcIlxuWzFdIFwiR3Vlc3MgdG9vIGxvd1wiXG5bMV0gXCJHdWVzcyBhIG51bWJlciBiZXR3ZWVuIDEgYW5kIDEwIVwiXG4ifQ== -->
+<pre><code>[1] &quot;Guess a number between 1 and 10!&quot;
+[1] &quot;Guess too low&quot;
+[1] &quot;Guess a number between 1 and 10!&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>3.4</p>
+<p>By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.</p>
+<p>You may want to read up on the definition of the Fibonacci sequence</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubl8wIDwtIDBcbm5fMSA8LSAxXG5cbnN1bSA8LSAwXG5cbndoaWxlKG5fMSA8PSA0MDAwMDAwKXtcbiAgXG4gIG5fMSA8LSBuXzAgKyBuXzFcbiAgbl8wIDwtIG5fMSAtIG5fMCAjIG9sZCBuXzEgdmFsdWVcbiAgXG4gIGlmIChuXzEgJSUgMiA9PSAwKXtcbiAgICBzdW0gPC0gc3VtICsgbl8xXG4gIH1cbiAgXG59XG5cbnN1bVxuYGBgIn0= -->
+<pre class="r"><code>n_0 &lt;- 0
+n_1 &lt;- 1
+
+sum &lt;- 0
+
+while(n_1 &lt;= 4000000){
+  
+  n_1 &lt;- n_0 + n_1
+  n_0 &lt;- n_1 - n_0 # old n_1 value
+  
+  if (n_1 %% 2 == 0){
+    sum &lt;- sum + n_1
+  }
+  
+}
+
+sum</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKCjIuMi4xIE1VTFRJUExZIG51bWJlciBieSAxNSBhbmQgYWRkIDQgdG8gZ2l2ZSBvdXRwdXQKCmBgYHtyfQojIyBTZXQgeiB0byBudW1iZXIgNCBhbmQgeSB0byBudW1iZXIgMyBhbmQgd3JvdGUgaWYgY29kZSB0aGF0IHN0YXRlcyBpZiB5IGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byAwLCB0aGVuIHRoZSBudW1iZXIgd2lsbCBiZSBtdWx0aXBsaWVkIGJ5IDE1IGFuZCB0aGVuIDQgd2lsbCBidyBhZGRlZCBvbgoKeiA8LSA0Cgp5IDwtIDEKCmlmICh5ID49IDApIHsKICB5ICogMTUgKyB6Cn0KICAgIAoKCmBgYAoKCgoyLjIuMSBXcml0ZSBhIGZ1bmN0aW9uIHRodCByZXR1cm5zICJiaXJkLCBpZiB0aGUgaW5wdXQgaXMgZ29vc2UsIGR1Y2sgb3IgcGlnZW9uIGFuZCByZXR1cm5zIG5vdCBidXJkIGZvciBldmVyeXRoaWduIGVsc2UKCmBgYHtyfQojIyB0aGlzIGl3bGwgbXVsdGlwbHkgYW5kIG51bWJlciBncmVhdGVyIHRoYW4gMCBieSAxMCwgaWYgMCBvciBhbnkgbmVnYXRpdmUgbnVtYmVyIGlzIGlucHV0IHRoaXMgd2lsbCBwdWxsIG1lc3NhZ2UKCnkgPC0gMAoKCmlmICh5ID4gMCkgewogIHkgKiAxMAp9IGVsc2UKICBwcmludCgiaW52YWxpZCBpbnB1dCIpCgpgYGAKCgoKCmBgYHtyfQoKbXlfYW5pbWFscyA8LSBjKCJnb29zZSIsICJkdWNrIiwgIlBpZ2VvbiIpCgojIyBjcmVhdGVkIGEgdmVjdG9yIGZvciB0aGUgZXF1aXJlZCBhbmltYWxzIHRoYXQgYXJlIHRvIHJldHVybiB0aGUgYmlyZCBzdGF0ZW1lbnQKCmlmKCJnb29zZSIgJWluJSBteV9hbmltYWxzKXsKICBwcmludCgiYmlyZCIpIAogICMjIGlmIGdvb3NlIGlzIGlucHV0IG9yIGFueSBvZiB0aGUgYW5pbWFscyBpbiB0aGUgdmVjdG9yIGFib3ZlIHRoaXMgY29uZGl0aW9uIHdpbGwgYmUgbWV0IGFuZCBiaXJkIHdpbGwgYmUgcHJpbnRlZAp9IGVsc2UgewogICAgcHJpbnQoIm5vdCBhIGJpcmQiKQogICMjIGFueXRoaW5nIGVsc2Ugb3V0c2lkZSB0aGUgdmVjdG9yIHdpbCBtZWVkIHRoaXMgY29uZGl0aW9uIGFuZCByZXR1cm4gbm90IGEgYmlyZAp9CgpgYGAKCgoyLjIuMyB3cml0ZSBhIGZ1bmN0aW9uIHRoYXQgbXVsaXBsaWVzIGFsbCBudW1iZXJzIGJ5IDEwLCBpZiB0aGUgaW5wdXQgaXNudCBhIG51bWJlciB0aGUgZnVuY3RpdG9uIHNob3VsZCByZXR1cm4gImludmFsaWQgaW5wdXQiCgojIyB0aGVyZSB3aWxsIGJlIGEgbG9vcCBuZWVkZWQuCgoKYGBge3J9CgpsaWJyYXJ5KGRwbHlyKQoKYGBgCgoKMi4zLjEgZm9yIHRoZSB2ZWN0b3IgYmVsb3csIG1ha2UgYSBuZXcgdmVjdG9yIHdoaWNoIGlzIGVxdWFsIHRvICJiaWciIGV2ZXJ5dGltZSB0aGUgZWxlbWVudCBvZiBzaXplcyBpcyBncmVhdGVyIHRoYW4gMTAgYW5kIGVxdWFsIHRvICJzbWFsbCIgZXZlcnl0aW1lIHRoZSBlbGVtZW50IG9mIHNpemVzIGlzIGxlc3MgdGhhbiBvciBlcXVhbCB0byAxMAoKYGBge3J9CgojIyB0aGlzIHR1cm5zIHRoZSBudW1lcmljYWwgdmVjdG9yIGludG8gYSBsb2dpY2FsIG9uZQoKc2l6ZXMgPC0gYygxMywgMTUsIDEwLCA4LCAyMikgCgpzaXplcyA8PSAxMAoKYGBgCgojIyB0aGlzIGNvZGUgaGFzIGJyb3VnaHQgYmFjayB0aGUgb25lcyB0aGF0IGFyZSBiaWcgYW5kIGFueSBsb3dlciB0aGFuIG9yIGVxdWFsIHRvIDEwIGFyZSBzbWFsbAoKYGBge3J9CgppZmVsc2Uoc2l6ZXMgPD0gMTAsICJTbWFsbCIsICJCaWciKQoKYGBgCgoKMi4zLjIgRm9yIHRoZSB2ZWN0b3IgYmVsb3cgY29udmVydDogYXBwbGUgLSBhbHBhY2EsIGJhbmFuYS0gYm9ub2JvLCBjaGVycnkgLSBjaGlwbXVuawoKYGBge3J9CiMjIHRoaXMgcmVjb2RlIGZ1bnRpb24gaGFzIGFtZW5kZWQgdGhlIHBhcnRzIG9mIHRoZSB2ZWN0b3JzIHRvIGFsdGVybmF0ZSB3b3JkcwoKbXlfZnJ1aXQgPC0gYXMuZmFjdG9yKGMoImFwcGxlIiwgImFwcGxlIiwgImJhbmFuYSIsICJjaGVycnkiLCAiY2hlcnJ5IikpCgpkcGx5cjo6cmVjb2RlKG15X2ZydWl0LCAiYXBwbGUiID0gImFscGFjYSIsICJiYW5hbmEiID0gImJvbm9ubyIsICJjaGVycnkiID0gImNoaXBtdW5rIikKCmBgYAoKCjIuMy4zIHRoZSB0d28gdmVjdG9ycyBiZWxvdyBzaG93IHRoZSBhZ2VzIGF0IG1hcnJpYWdlIG9mIGVhY2ggbWVtYmVyIG9mIGEgY291cGxlLCB0aGUgZmlyc3QgZWxlbWVudCAgb2YgZWFjaCB2ZWN0b3IgY29ycmVzcG9uZHMgdG8gdGhlIGZpcnN0IGNvdXBsZSwgdGhlIHNlY29uZCBlbGVtZW50cyB0byB0aGUgc2Vjb25kIGNvdXBsZSAKCmNyZWF0IGEgbmV3IHZlY3RvciB3aGljaCBpcyBlcXVhbCB0byAKCiJXaWZlIG9sZGVyIiB3aGVuZXZlciB0aGUgd2lmZXMgYWdlcyBpcyB0aGUgaGlnaGVzdC4gIkh1c2JhbmQgb2xkZXIiIHdoZW4gdGhlIGh1c2JhbmRzIGFnZSBpcyB0aGUgaGlnaGVzdCwgIlNhbWUgYWdlIiB3aGVuIHRoZXkgYXJlIHRoZSBzYW1lIGFnZQoKCmBgYHtyfQojIyB0aGlzIGlzIHRoZSB2ZWNvdHMgY3JlYXN0ZWQgZm9yIGh1c2JhbmQgYWdlIGFuZCB3aWZlIGFnZQoKd2lmZV9hZ2UgPC0gYygyOUwsIDMwTCwgMzZMLCAzMUwsIDIyTCkKCmh1c2JhbmRfYWdlIDwtIGMoMjhMLCAzNUwsIDMyTCwgMzFMLCAyOUwpCgpgYGAKCgpgYGB7cn0KCmNhc2Vfd2hlbigKICB3aWZlX2FnZSA+IGh1c2JhbmRfYWdlIH4gIldpZmUgb2xkZXN0IiwKICAjIyB0aGlzIGJyaW5ncyBiYWNrIHRoZSB3aWZlIG9sZGVzdCBhdCB0aGUgb2xkZXN0IHBvaW50CiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+ICJodXNiYW5kIG9sZGVzdCIsCiAgIyMgdGhpcyByZXR1cm5zIHRoZSBodXNiYW5kIG9sZGVzdCBhdCBvbGRlc3QgYWdlcwogIHdpZmVfYWdlID09IGh1c2JhbmRfYWdlICB+ICJzYW1lIiwgCiAgIyMgdGhpcyBnaXZlcyB0aGUgc2FtZQopCiAgCmBgYAoKMi40LjEgVXNlIGEgbG9vcCB0byBwcmludCBvdXQgZXZlcnkgZWxlbWVudCBvZiBteV9pc3QgIHdoaWNoIGlzIHR5cGUgY2hhcmFjdGVyIAoKCmBgYHtyfQoKIyMgY3JlYXRlZCBhbiBhcHBsZSBhcyBjaGFyYWN0ZXIgZnVuY3Rpb24gdG8gcHVsbCB0aGUgY2hhcmFjdGUgcGFydCBvZiB0aGUgbGlzdAoKYXBwbGUgPC0gYXMuY2hhcmFjdGVyKCJhcHBsZSIpCgpteV9saXN0IDwtIGxpc3QoCiAgNCwKICAiYXBwbGUiLAogIDEwLjUsCiAgYygiaXMiLCAiYW4iLCAiYXBwbGUiKSwKICAiYXBwbGUiLAogIGMoImkiLCAibGlrZSIsICJhcHBsZXMiKSwKICA4CikKCgpgYGAKCgpgYGB7cn0KCmZvciAoZWxlbSBpbiBteV9saXN0KSB7CiAgaWYgKGlzLmNoYXJhY3RlcihlbGVtKSkgewogICAgcHJpbnQoZWxlbSkKICB9Cn0KCmBgYAoKCgpgYGB7cn0KCmZvciAoYXBwbGUgaW4gbXlfbGlzdCkgewogIHBocmFzZSA8LSBwYXN0ZShhcHBsZSwgImlzIGFuIGFwcGxlIiwgICJpIGxpa2UgYXBwbGVzIiwgc2VwID0gIiAiKQpwcmludChwaHJhc2UpCn0KYGBgCgoKCmBgYHtyfQoKbGVuZ3RoX2xpc3QgPC0gbGVuZ3RoKG15X2xpc3QpCgpgYGAKCgoKYGBge3J9Cgpmb3IgKGVsZW0gaW4gbXlfbGlzdCkgewogIGlmIChpcy5jaGFyYWN0ZXIoZWxlbSkpIHsKICAgIGlmIChsZW5ndGgoZWxlbSkgPiAxKSB7CiAgICAgIHByaW50KHBhc3RlKGVsZW0sIGNvbGxhcHNlID0gIiAiKSkKICAgIH0gZWxzZSB7CiAgICAgIHByaW50KGVsZW0pCiAgICB9CiAgfQp9CgpgYGAKCgpgYGB7cn0KCiMjdmVjdG9yIGNyZWF0ZWQgZm9yIHRoZSBmb3IgbG9vcAoKCmZvciAoaSBpbiBsZW5ndGhfbGlzdCkgewogIHBocmFzZSA8LSBwYXN0ZSgiaXMgYW4gIiwgImkgbGlrZSBhcHBsZXMiLCBsZW5ndGhfbGlzdCBbaV0pCiAgcHJpbnQocGhyYXNlKQp9CgojI3RoZSBmb3IgbG9vcCBhbGxvdyB0aGUgY29kZSB0byBqb2luIHRoZSB2ZWN0b3JzIHRvZ2V0aGVyIGJ5IGxlbmd0aAoKYGBgCgoKYGBge3J9Cgpmb3IoaSBpbiAxOmxlbmd0aChteV9saXN0KSl7CiAgaWYoY2xhc3MobXlfbGlzdFtbaV1dKSA9PSAiY2hhcmFjdGVyIil7CiAgICBpZihsZW5ndGgobXlfbGlzdFtbaV1dKSA+IDEpewogICAgICBwYXN0ZWRfb2JqIDwtIHBhc3RlKG15X2xpc3RbW2ldXSwgY29sbGFwc2UgPSAiICIpCiAgICAgIH0KICAgIHJldHVybihwYXN0ZWRfb2JqKQogIH0KICByZXR1cm4oIm5vdCBhIGNoYXJhY3RlciIpCn0KCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKCjIuMi4xIE1VTFRJUExZIG51bWJlciBieSAxNSBhbmQgYWRkIDQgdG8gZ2l2ZSBvdXRwdXQKCmBgYHtyfQojIyBTZXQgeiB0byBudW1iZXIgNCBhbmQgeSB0byBudW1iZXIgMyBhbmQgd3JvdGUgaWYgY29kZSB0aGF0IHN0YXRlcyBpZiB5IGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byAwLCB0aGVuIHRoZSBudW1iZXIgd2lsbCBiZSBtdWx0aXBsaWVkIGJ5IDE1IGFuZCB0aGVuIDQgd2lsbCBidyBhZGRlZCBvbgoKeiA8LSA0Cgp5IDwtIDEKCmlmICh5ID49IDApIHsKICB5ICogMTUgKyB6Cn0KICAgIAoKCmBgYAoKU09MVVRJT04KCldyaXRlIGEgZnVuY3Rpb24gd2hpY2ggbXVsdGlwbGVzIGFsbCBudW1iZXJzIGJ5IDE1IGFuZCBhZGRzIDQuCgpgYGB7cn0KdGltZXNfMTVfYWRkXzQgPC0gZnVuY3Rpb24oeCkgewogIHggKiAxNSArIDQKfQpgYGAKCjIuMi4xIFdyaXRlIGEgZnVuY3Rpb24gdGh0IHJldHVybnMgImJpcmQsIGlmIHRoZSBpbnB1dCBpcyBnb29zZSwgZHVjayBvciBwaWdlb24gYW5kIHJldHVybnMgbm90IGJpcmQgZm9yIGV2ZXJ5dGhpZ24gZWxzZQoKCmBgYHtyfQoKbXlfYW5pbWFscyA8LSBjKCJnb29zZSIsICJkdWNrIiwgIlBpZ2VvbiIpCgojIyBjcmVhdGVkIGEgdmVjdG9yIGZvciB0aGUgZXF1aXJlZCBhbmltYWxzIHRoYXQgYXJlIHRvIHJldHVybiB0aGUgYmlyZCBzdGF0ZW1lbnQKCmlmKCJnb29zZSIgJWluJSBteV9hbmltYWxzKXsKICBwcmludCgiYmlyZCIpIAogICMjIGlmIGdvb3NlIGlzIGlucHV0IG9yIGFueSBvZiB0aGUgYW5pbWFscyBpbiB0aGUgdmVjdG9yIGFib3ZlIHRoaXMgY29uZGl0aW9uIHdpbGwgYmUgbWV0IGFuZCBiaXJkIHdpbGwgYmUgcHJpbnRlZAp9IGVsc2UgewogICAgcHJpbnQoIm5vdCBhIGJpcmQiKQogICMjIGFueXRoaW5nIGVsc2Ugb3V0c2lkZSB0aGUgdmVjdG9yIHdpbCBtZWVkIHRoaXMgY29uZGl0aW9uIGFuZCByZXR1cm4gbm90IGEgYmlyZAp9CgpgYGAKCgpTT0xVVElPTgoKYGBge3J9CmlzX2JpcmQgPC0gZnVuY3Rpb24oeCkgewogIGlmICh4ICVpbiUgYygiZ29vc2UiLCAiZHVjayIsICJwaWdlb24iKSkgewogICAgcmV0dXJuKCJiaXJkIikKICB9IGVsc2UgewogICAgcmV0dXJuKCJub3QgYmlyZCIpCiAgfQp9CgpgYGAKCgoyLjIuMyB3cml0ZSBhIGZ1bmN0aW9uIHRoYXQgbXVsaXBsaWVzIGFsbCBudW1iZXJzIGJ5IDEwLCBpZiB0aGUgaW5wdXQgaXNudCBhIG51bWJlciB0aGUgZnVuY3RpdG9uIHNob3VsZCByZXR1cm4gImludmFsaWQgaW5wdXQiCgojIyB0aGVyZSB3aWxsIGJlIGEgbG9vcCBuZWVkZWQuCgoKYGBge3J9CiMjIHRoaXMgaXdsbCBtdWx0aXBseSBhbmQgbnVtYmVyIGdyZWF0ZXIgdGhhbiAwIGJ5IDEwLCBpZiAwIG9yIGFueSBuZWdhdGl2ZSBudW1iZXIgaXMgaW5wdXQgdGhpcyB3aWxsIHB1bGwgbWVzc2FnZQoKeSA8LSAwCgoKaWYgKHkgPiAwKSB7CiAgeSAqIDEwCn0gZWxzZQogIHByaW50KCJpbnZhbGlkIGlucHV0IikKCmBgYAoKU09MVVRJT04KCmBgYHtyfQp0aW1lc18xMCA8LSBmdW5jdGlvbih4KSB7CiAgaWYgKGlzLm51bWVyaWMoeCkpIHsKICAgIHJldHVybih4ICogMTApCiAgfSBlbHNlIHsKICAgIHJldHVybigiSW52YWxpZCBpbnB1dCIpCiAgfQp9CmBgYAoKCgpgYGB7cn0KCmxpYnJhcnkoZHBseXIpCgpgYGAKCgoyLjMuMSBmb3IgdGhlIHZlY3RvciBiZWxvdywgbWFrZSBhIG5ldyB2ZWN0b3Igd2hpY2ggaXMgZXF1YWwgdG8gImJpZyIgZXZlcnl0aW1lIHRoZSBlbGVtZW50IG9mIHNpemVzIGlzIGdyZWF0ZXIgdGhhbiAxMCBhbmQgZXF1YWwgdG8gInNtYWxsIiBldmVyeXRpbWUgdGhlIGVsZW1lbnQgb2Ygc2l6ZXMgaXMgbGVzcyB0aGFuIG9yIGVxdWFsIHRvIDEwCgpgYGB7cn0KCiMjIHRoaXMgdHVybnMgdGhlIG51bWVyaWNhbCB2ZWN0b3IgaW50byBhIGxvZ2ljYWwgb25lCgpzaXplcyA8LSBjKDEzLCAxNSwgMTAsIDgsIDIyKSAKCnNpemVzIDw9IDEwCgpgYGAKCiMjIHRoaXMgY29kZSBoYXMgYnJvdWdodCBiYWNrIHRoZSBvbmVzIHRoYXQgYXJlIGJpZyBhbmQgYW55IGxvd2VyIHRoYW4gb3IgZXF1YWwgdG8gMTAgYXJlIHNtYWxsCgpgYGB7cn0KCmlmZWxzZShzaXplcyA8PSAxMCwgIlNtYWxsIiwgIkJpZyIpCgpgYGAKClNPTFVUSU9OCgpgYGB7cn0Kc2l6ZXMgPC0gYygxMywgMTUsIDEwLCA4LCAyMikKCiMgaWZlbHNlCmlmZWxzZShzaXplcyA+IDEwLCAiQmlnIiwgIlNtYWxsIikKCmBgYAoKUkVDT0RFCgpgYGB7cn0KIyByZWNvZGUKcmVjb2RlKHNpemVzLCBgMTBgID0gIlNtYWxsIiwgYDhgID0gIlNtYWxsIiwgLmRlZmF1bHQgPSAiQmlnIikKCmBgYAoKQ0FTRSBXSEVOCgpgYGB7cn0KIyBjYXNlX3doZW4KY2FzZV93aGVuKAogIHNpemVzID4gMTAgfiAiQmlnIiwKICBUUlVFIH4gIlNtYWxsIgopCmBgYAoKMi4zLjIgRm9yIHRoZSB2ZWN0b3IgYmVsb3cgY29udmVydDogYXBwbGUgLSBhbHBhY2EsIGJhbmFuYS0gYm9ub2JvLCBjaGVycnkgLSBjaGlwbXVuawoKYGBge3J9CiMjIHRoaXMgcmVjb2RlIGZ1bnRpb24gaGFzIGFtZW5kZWQgdGhlIHBhcnRzIG9mIHRoZSB2ZWN0b3JzIHRvIGFsdGVybmF0ZSB3b3JkcwoKbXlfZnJ1aXQgPC0gYXMuZmFjdG9yKGMoImFwcGxlIiwgImFwcGxlIiwgImJhbmFuYSIsICJjaGVycnkiLCAiY2hlcnJ5IikpCgpkcGx5cjo6cmVjb2RlKG15X2ZydWl0LCAiYXBwbGUiID0gImFscGFjYSIsICJiYW5hbmEiID0gImJvbm9ubyIsICJjaGVycnkiID0gImNoaXBtdW5rIikKCmBgYAoKU09MVVRJT04KCmBgYHtyfQpmcnVpdCA8LSBjKCJhcHBsZSIsICJhcHBsZSIsICJiYW5hbmEiLCAiY2hlcnJ5IiwgImNoZXJyeSIpCgojIGlmIGVsc2UKYW5pbWFscyA8LSBpZmVsc2UoZnJ1aXQgPT0gImFwcGxlIiwgImFscGFjYSIsIGZydWl0KQphbmltYWxzIDwtIGlmZWxzZShhbmltYWxzID09ICJiYW5hbmEiLCAiYm9ub2JvIiwgYW5pbWFscykKaWZlbHNlKGFuaW1hbHMgPT0gImNoZXJyeSIsICJjaGlwbXVuayIsIGFuaW1hbHMpCgpgYGAKCgpgYGB7cn0KIyByZWNvZGUKcmVjb2RlKGZydWl0LCBhcHBsZSA9ICJhbHBhY2EiLCBiYW5hbmEgPSAiYm9ub2JvIiwgY2hlcnJ5ID0gImNoaXBtdW5rIikKYGBgCgpgYGB7cn0KIyBjYXNlX3doZW4KY2FzZV93aGVuKAogIGZydWl0ID09ICJhcHBsZSIgfiAiYWxwYWNhIiwKICBmcnVpdCA9PSAiYmFuYW5hIiB+ICJib25vYm8iLAogIGZydWl0ID09ICJjaGVycnkiIH4gImNoaXBtdW5rIgopCmBgYAoKCjIuMy4zIHRoZSB0d28gdmVjdG9ycyBiZWxvdyBzaG93IHRoZSBhZ2VzIGF0IG1hcnJpYWdlIG9mIGVhY2ggbWVtYmVyIG9mIGEgY291cGxlLCB0aGUgZmlyc3QgZWxlbWVudCAgb2YgZWFjaCB2ZWN0b3IgY29ycmVzcG9uZHMgdG8gdGhlIGZpcnN0IGNvdXBsZSwgdGhlIHNlY29uZCBlbGVtZW50cyB0byB0aGUgc2Vjb25kIGNvdXBsZSAKCmNyZWF0IGEgbmV3IHZlY3RvciB3aGljaCBpcyBlcXVhbCB0byAKCiJXaWZlIG9sZGVyIiB3aGVuZXZlciB0aGUgd2lmZXMgYWdlcyBpcyB0aGUgaGlnaGVzdC4gIkh1c2JhbmQgb2xkZXIiIHdoZW4gdGhlIGh1c2JhbmRzIGFnZSBpcyB0aGUgaGlnaGVzdCwgIlNhbWUgYWdlIiB3aGVuIHRoZXkgYXJlIHRoZSBzYW1lIGFnZQoKCmBgYHtyfQojIyB0aGlzIGlzIHRoZSB2ZWNvdHMgY3JlYXN0ZWQgZm9yIGh1c2JhbmQgYWdlIGFuZCB3aWZlIGFnZQoKd2lmZV9hZ2UgPC0gYygyOUwsIDMwTCwgMzZMLCAzMUwsIDIyTCkKCmh1c2JhbmRfYWdlIDwtIGMoMjhMLCAzNUwsIDMyTCwgMzFMLCAyOUwpCgpgYGAKCgpgYGB7cn0KCmNhc2Vfd2hlbigKICB3aWZlX2FnZSA+IGh1c2JhbmRfYWdlIH4gIldpZmUgb2xkZXN0IiwKICAjIyB0aGlzIGJyaW5ncyBiYWNrIHRoZSB3aWZlIG9sZGVzdCBhdCB0aGUgb2xkZXN0IHBvaW50CiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+ICJodXNiYW5kIG9sZGVzdCIsCiAgIyMgdGhpcyByZXR1cm5zIHRoZSBodXNiYW5kIG9sZGVzdCBhdCBvbGRlc3QgYWdlcwogIHdpZmVfYWdlID09IGh1c2JhbmRfYWdlICB+ICJzYW1lIiwgCiAgIyMgdGhpcyBnaXZlcyB0aGUgc2FtZQopCiAgCmBgYAoKU09MVVRJT04KCmBgYHtyfQp3aWZlX2FnZSA8LSBjKDI5TCwgMzBMLCAzNkwsIDMxTCwgMjJMKQpodXNiYW5kX2FnZSA8LSBjKDI4TCwgMzVMLCAzMkwsIDMxTCwgMjlMKQpgYGAKCgpgYGB7cn0KIyBpZmVsc2UKaWZlbHNlKHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UsICJXaWZlIG9sZGVyIiwgaWZlbHNlKHdpZmVfYWdlIDwgaHVzYmFuZF9hZ2UsICJIdXNiYW5kIG9sZGVyIiwgIlNhbWUgYWdlIikpCmBgYAoKYGBge3J9CgojIHJlY29kZQpkaWZmZXJlbmNlIDwtIHNpZ24od2lmZV9hZ2UgLSBodXNiYW5kX2FnZSkKcmVjb2RlKGRpZmZlcmVuY2UsIGAxYCA9ICJXaWZlIG9sZGVyIiwgYDBgID0gIlNhbWUgYWdlIiwgYC0xYCA9ICJIdXNiYW5kIG9sZGVyIikKYGBgCgpgYGB7cn0KIyBjYXNlX3doZW4KY2FzZV93aGVuKAogIHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UgfiAiV2lmZSBvbGRlciIsCiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+ICJIdXNiYW5kIG9sZGVyIiwKICB3aWZlX2FnZSA9PSBodXNiYW5kX2FnZSB+ICJTYW1lIGFnZSIKKQoKYGBgCgoKMi40LjEgVXNlIGEgbG9vcCB0byBwcmludCBvdXQgZXZlcnkgZWxlbWVudCBvZiBteV9pc3QgIHdoaWNoIGlzIHR5cGUgY2hhcmFjdGVyIAoKCmBgYHtyfQoKIyMgY3JlYXRlZCBhbiBhcHBsZSBhcyBjaGFyYWN0ZXIgZnVuY3Rpb24gdG8gcHVsbCB0aGUgY2hhcmFjdGUgcGFydCBvZiB0aGUgbGlzdAoKYXBwbGUgPC0gYXMuY2hhcmFjdGVyKCJhcHBsZSIpCgpteV9saXN0IDwtIGxpc3QoCiAgNCwKICAiYXBwbGUiLAogIDEwLjUsCiAgYygiaXMiLCAiYW4iLCAiYXBwbGUiKSwKICAiYXBwbGUiLAogIGMoImkiLCAibGlrZSIsICJhcHBsZXMiKSwKICA4CikKCgpgYGAKCgpgYGB7cn0KCmZvciAoZWxlbSBpbiBteV9saXN0KSB7CiAgaWYgKGlzLmNoYXJhY3RlcihlbGVtKSkgewogICAgcHJpbnQoZWxlbSkKICB9Cn0KCmBgYAoKCgpgYGB7cn0KCmZvciAoYXBwbGUgaW4gbXlfbGlzdCkgewogIHBocmFzZSA8LSBwYXN0ZShhcHBsZSwgImlzIGFuIGFwcGxlIiwgICJpIGxpa2UgYXBwbGVzIiwgc2VwID0gIiAiKQpwcmludChwaHJhc2UpCn0KYGBgCgoKCmBgYHtyfQoKbGVuZ3RoX2xpc3QgPC0gbGVuZ3RoKG15X2xpc3QpCgpgYGAKClNPTFVUSU9OCgpgYGB7cn0KCmZvciAoZWxlbSBpbiBteV9saXN0KSB7CiAgaWYgKGlzLmNoYXJhY3RlcihlbGVtKSkgewogICAgaWYgKGxlbmd0aChlbGVtKSA+IDEpIHsKICAgICAgcHJpbnQocGFzdGUoZWxlbSwgY29sbGFwc2UgPSAiICIpKQogICAgfSBlbHNlIHsKICAgICAgcHJpbnQoZWxlbSkKICAgIH0KICB9Cn0KCmBgYAoKCmBgYHtyfQoKIyN2ZWN0b3IgY3JlYXRlZCBmb3IgdGhlIGZvciBsb29wCgoKZm9yIChpIGluIGxlbmd0aF9saXN0KSB7CiAgcGhyYXNlIDwtIHBhc3RlKCJpcyBhbiAiLCAiaSBsaWtlIGFwcGxlcyIsIGxlbmd0aF9saXN0IFtpXSkKICBwcmludChwaHJhc2UpCn0KCiMjdGhlIGZvciBsb29wIGFsbG93IHRoZSBjb2RlIHRvIGpvaW4gdGhlIHZlY3RvcnMgdG9nZXRoZXIgYnkgbGVuZ3RoCgpgYGAKCgpgYGB7cn0KCmZvcihpIGluIDE6bGVuZ3RoKG15X2xpc3QpKXsKICBpZihjbGFzcyhteV9saXN0W1tpXV0pID09ICJjaGFyYWN0ZXIiKXsKICAgIGlmKGxlbmd0aChteV9saXN0W1tpXV0pID4gMSl7CiAgICAgIHBhc3RlZF9vYmogPC0gcGFzdGUobXlfbGlzdFtbaV1dLCBjb2xsYXBzZSA9ICIgIikKICAgICAgfQogICAgcmV0dXJuKHBhc3RlZF9vYmopCiAgfQogIHJldHVybigibm90IGEgY2hhcmFjdGVyIikKfQoKYGBgCgoKRVhURU5TSU9OLSBQVVpaTEVTCgozLjEKCldyaXRlIGNvZGUgdGhhdCBwcmludHMgYSBtdWx0aXBsaWNhdGlvbiB0YWJsZSBmb3IgbnVtYmVycyB1cCB0byAxMi4gaS5lLiB0aGVyZSB3aWxsIGJlIDEyIHJvd3MgYW5kIDEyIGNvbHVtbnMsIGFuZCBlYWNoIGVsZW1lbnQgc2hvdWxkIGJlIHRoZSByb3cgbnVtYmVyIG11bHRpcGxpZWQgYnkgdGhlIGNvbHVtbiBudW1iZXIuCgpgYGB7cn0KbWF0cml4KDE6MTIpICUqJSB0KG1hdHJpeCgxOjEyKSkKCmBgYAoKMy4yCgpXcml0ZSBhIGZ1bmN0aW9uIHRoYXQgdGFrZXMgYSB2ZWN0b3IsIGFuZCBjcmVhdGVzIGEgdGV4dCBhcnQgaGlzdG9ncmFtLCBsaWtlIHRoZSBvbmUgYmVsb3cuCgpZb3UgbWF5IHdhbnQgdG8gdXNlIHRoZSBmdW5jdGlvbiBjYXQoKS4gVGhpcyBpcyBzaW1pbGFyIHRvIHByaW50KCksIGJ1dCBwcmludHMgZGlyZWN0bHksIHdpdGhvdXQgdmVjdG9yIG1hcmtlcnMuIFlvdSBjYW4gYWxzbyBpbmNsdWRlIG5ld2xpbmVzICJcbiIgd2hlbiB1c2luZyBjYXQoKS4KCmBgYHtyfQptYWtlX2hpc3RvZ3JhbSA8LSBmdW5jdGlvbih4KXsKICAKICBkaXN0aW5jdCA8LSBzb3J0KHVuaXF1ZSh4KSkKICAKICBmb3IgKGkgaW4gZGlzdGluY3QpewogICAgCiAgICBjb3VudCA8LSBzdW0oeCA9PSBpKQogICAgCiAgICBjYXQoaSkKICAgIGNhdCgiIHwgIikKICAgIGNhdChyZXAoIioiLCBjb3VudCkpCiAgICBjYXQoIlxuIikKICAgIAogIH0KICAKfQpgYGAKCgozLjMKCgpXcml0ZSBhIGd1ZXNzaW5nIGdhbWUgd2hlcmUgdGhlIHVzZXIgaGFzIHRvIGd1ZXNzIGEgc2VjcmV0IG51bWJlci4gQWZ0ZXIgZXZlcnkgZ3Vlc3MgdGhlIHByb2dyYW0gdGVsbHMgdGhlIHVzZXIgd2hldGhlciB0aGVpciBudW1iZXIgd2FzIHRvbyBsYXJnZSBvciB0b28gc21hbGwuIEF0IHRoZSBlbmQgdGhlIG51bWJlciBvZiB0cmllcyBuZWVkZWQgc2hvdWxkIGJlIHByaW50ZWQuCgpUbyB0YWtlIHVzZXIgaW5wdXQsIHVzZSB0aGUgZnVuY3Rpb24gcmVhZGxpbmUoKS4gV2hlbmV2ZXIgUiBlbmNvdW50ZXJzIHJlYWRsaW5lLCB0aGUgY29kZSB3aWxsIHN0b3AsIGFuZCB0aGUgdmFsdWUgYXNzaWduZWQgZnJvbSByZWFkbGluZSB3aWxsIGRlcGVuZCBvbiB0aGUgdmFsdWUgdGhhdCB0aGUgdXNlciBpbnB1dHMuIEZvciBtb3JlIGluZm9ybWF0aW9uIHNlZSB0aGUgaGVscCBmaWxlLgoKYGBge3J9Cm51bWJlciA8LSByb3VuZChydW5pZigxLCAxLCAxMCkpCgpndWVzc2VkIDwtIEZBTFNFCmF0dGVtcHRzIDwtIDAKCndoaWxlICghZ3Vlc3NlZCl7CiAgCiAgcHJpbnQoIkd1ZXNzIGEgbnVtYmVyIGJldHdlZW4gMSBhbmQgMTAhIikKICAKICBndWVzcyA8LSByZWFkbGluZSgiIikKICAKICBpZiAoZ3Vlc3MgPiBudW1iZXIpewogICAgCiAgICBwcmludCgiR3Vlc3MgaXMgdG9vIGhpZ2giKQogICAgCiAgICBhdHRlbXB0cyA8LSBhdHRlbXBzICsgMQogICAgCiAgfQogIAogIGlmIChndWVzcyA8IG51bWJlcil7CiAgICAKICAgIHByaW50KCJHdWVzcyB0b28gbG93IikKICAgIAogICAgYXR0ZW1wdHMgPC0gYXR0ZW1wdHMgKyAxCiAgICAKICB9CiAgCiAgaWYgKGd1ZXNzID09IG51bWJlcil7CiAgICAKICAgIHByaW50KCJHdWVzcyBpcyByaWdodCEgV2VsbCBkb25lISIpCiAgICAKICAgIHByaW50KHBhc3RlKCJBdHRlbXB0czoiLCBhdHRlbXB0cykpCiAgICAKICAgIGd1ZXNzZWQgPC0gVFJVRQogICAgCiAgfQogIAp9CgpgYGAKCjMuNAoKQnkgY29uc2lkZXJpbmcgdGhlIHRlcm1zIGluIHRoZSBGaWJvbmFjY2kgc2VxdWVuY2Ugd2hvc2UgdmFsdWVzIGRvIG5vdCBleGNlZWQgZm91ciBtaWxsaW9uLCBmaW5kIHRoZSBzdW0gb2YgdGhlIGV2ZW4tdmFsdWVkIHRlcm1zLgoKWW91IG1heSB3YW50IHRvIHJlYWQgdXAgb24gdGhlIGRlZmluaXRpb24gb2YgdGhlIEZpYm9uYWNjaSBzZXF1ZW5jZQoKYGBge3J9Cm5fMCA8LSAwCm5fMSA8LSAxCgpzdW0gPC0gMAoKd2hpbGUobl8xIDw9IDQwMDAwMDApewogIAogIG5fMSA8LSBuXzAgKyBuXzEKICBuXzAgPC0gbl8xIC0gbl8wICMgb2xkIG5fMSB2YWx1ZQogIAogIGlmIChuXzEgJSUgMiA9PSAwKXsKICAgIHN1bSA8LSBzdW0gKyBuXzEKICB9CiAgCn0KCnN1bQpgYGAKCg==</div>
 
 
 

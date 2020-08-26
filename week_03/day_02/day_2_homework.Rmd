@@ -7,7 +7,7 @@ output: html_notebook
 library(tidyverse)
 ```
 
-Q1- Let’s start by loading the tidyverse library and reading the data in. You learned earlier this week how to get a feel for your data when you first load it in. Find out the dimensions, variable names, and print the first 10 rows.
+Let’s start by loading the tidyverse library and reading the data in. You learned earlier this week how to get a feel for your data when you first load it in. Find out the dimensions, variable names, and print the first 10 rows.
 
 ```{r}
 face_desc <- read_csv("data/face_descriptions.csv")
@@ -32,6 +32,31 @@ names(face_desc)
 names(face_desc)
 ```
 
+SOLUTION
+
+```{r}
+# load in the data 
+face_descriptions <- read_csv("data/face_descriptions.csv")
+
+```
+
+```{r}
+# get dimensions, variable names, and print the first 10 rows 
+dim(face_descriptions)
+```
+
+```{r}
+names(face_descriptions)
+
+```
+
+
+```{r}
+face_descriptions %>%
+  head(10)
+```
+
+
 
 Do these variable names look tidy to you? What format is your data in (long or wide)?
 ```{r}
@@ -40,8 +65,16 @@ Do these variable names look tidy to you? What format is your data in (long or w
 
 ```
 
+SOLUTION
 
-Q3. Being faced with such complex data can be daunting, we may feel overwhelmed and ask ourselves:
+```{r}
+# If we have a look at these descriptions, we can see that there’s a lot of variation. Some participants provided one word descriptions whilst others provided multiple word descriptions. Some wrote their descriptions in lower case, whilst others wrote in upper case and used punctuation (e.g. commas, hyphens, slashes). As a result, this data isn’t organised in a clear, logical way.
+
+# Each row is a unique ID of the person doing the rating. However, the characteristics they rate on are spread across 50 different columns (wide format).
+```
+
+
+Being faced with such complex data can be daunting, we may feel overwhelmed and ask ourselves:
 
 How can I organise this data?
 How can I make this data meaningful?
@@ -70,8 +103,22 @@ face_desc_long
 ```
 
 
+SOLUTION
 
-Q4. But wait! Some people have given lengthy descriptions of the faces, some have only given one word. This can be problematic for analysis, if you eventually want to summarise key descriptions.
+```{r}
+face_descriptions_long <- face_descriptions %>%
+  pivot_longer(cols = starts_with("t"), 
+               names_to = "face_id",
+               values_to = "description")
+
+face_descriptions_long 
+
+# Now, each row has one observation - meaning that we firstly have all participants descriptions of face t1, followed by all participants descriptions of face t2, and so on…
+```
+
+
+
+But wait! Some people have given lengthy descriptions of the faces, some have only given one word. This can be problematic for analysis, if you eventually want to summarise key descriptions.
 
 Some people have split the description of the faces using a slash. Use the separate function to split apart the descriptions column so that if people have given more than one answer (i.e. if the data is separated by a /) it is moved into a new row.
 
@@ -86,6 +133,43 @@ face_desc_coded <- face_desc_long %>%
 
 face_desc_coded
 ```
+
+SOLUTION
+
+```{r}
+# I had a look through the data, and decided that three was the most common response if they'd gone beyond one description. Some people gave four, but that wasn't many. So i'll stick with three... you might have something different. 
+
+# separate it 
+separated_descriptions <- face_descriptions_long %>%
+  separate(description, c("d1","d2","d3"), sep = "/")
+
+```
+
+```{r}
+separated_descriptions
+```
+
+ALTERNATIVE SOLUTIIN
+
+```{r}
+install.packages("splitstackshape")
+library(splitstackshape)
+```
+
+```{r}
+
+face_descriptions_long %>%
+  cSplit("description", sep = "/")
+```
+
+Can even use the argument direction = long which means don’t need to do an extra step to make long again:
+
+```{r}
+
+face_descriptions_long %>%
+cSplit('description',  sep = "/", direction = "long")
+```
+
 
 
 We’ve now split the data, and have three description variables. But is this data ACTUALLY tidy? Isn’t one of the rules that we need to have only one column per variable? And now we have more than one description variables…
@@ -105,6 +189,19 @@ all_descriptions
 
 ```
 
+SOLUTION
+
+```{r}
+all_descriptions_2 <- separated_descriptions %>%
+  pivot_longer(cols = starts_with("d"), 
+               names_to = "description_number", 
+               values_to = "description")
+
+all_descriptions_2
+
+```
+
+
 But, wait… another problem arises… not everyone provided three descriptions! So, if you look at the data, we have some missing values (NAs). We also have some nonsense descriptions (e.g. “f” and “.”). Let’s now sort these out.
 
 Use the filter function to get rid of NA’s and useless descriptions.
@@ -123,6 +220,15 @@ tidy_description
 
 ```
 
+SOLUTION
+
+```{r}
+tidy_descriptions <- all_descriptions_2 %>%
+  filter(!is.na(description),
+         nchar(description) > 1)
+
+tidy_descriptions
+```
 
 
 Now we can actually find something out about our data. Let’s find out what the most common description of each face is. Earlier in the week you learnt how to pipe functions together to create summary stats.
@@ -137,6 +243,24 @@ head(description)
 
 ```
 
+SOLUTION
+
+```{r}
+# group the data 
+grouped_faces_2 <- tidy_descriptions %>%
+  group_by(description)
+head(grouped_faces)
+```
+
+
+```{r}
+# summarise and generate a count for each 
+sum_faces <- summarise(grouped_faces, n = n())
+```
+
+```{r}
+sum_faces
+```
 
 
 Finally, arrange the output so that we have the most common description at the top, and the least common at the bottom.
@@ -146,7 +270,11 @@ Hint Do you need ascending or descending order for this? Create a tibble called 
 This will help us answer the question: what are the most common descriptions of faces given?
 
 ```{r}
+top_10_descriptions <- sum_faces %>%
+  arrange(desc(n)) %>%
+  filter(row_number() < 11 ) # could also use head(10) or slice(1:10)
 
+top_10_descriptions
 
 
 ```
@@ -154,11 +282,25 @@ This will help us answer the question: what are the most common descriptions of 
 
 So from that messy dataset, we now have a nice summary table of the 10 most common descriptions of faces. And we did it quickly! But one of the most useful things we learnt this week was how to create a pipe. Try your hand at changing the code above into a pipe. Start from the very beginning, where you load in the data. Save it all in a tibble called faces.
 
-Congrats! You have successfully gone from messy data to summary stats - exactly what you’ve been learning to do over the past couple of days. Well done.
+SOLUTION
 
 ```{r}
-
-
+# pipe it 
+faces <- face_descriptions %>%
+  pivot_longer(cols = starts_with("t"),  names_to = "face_id", values_to = "description") %>%
+  separate(description, c("d1","d2","d3"), sep = ", ", extra = "merge", remove = FALSE) %>%
+  separate(description, c("d1","d2","d3"), sep = ";", extra = "merge", remove = FALSE) %>%
+  separate(description, c("d1","d2","d3"), sep = "\\/", extra = "merge") %>%
+  pivot_longer(cols = starts_with("d"), names_to = "description_number", values_to = "description") %>%
+  filter(!is.na(description), nchar(description) > 1) %>%
+  mutate(description = trimws(description),
+         description = tolower(description)) %>%
+  group_by(description) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  filter(row_number() < 11)
 
 ```
 
+
+Congrats! You have successfully gone from messy data to summary stats - exactly what you’ve been learning to do over the past couple of days. Well done.

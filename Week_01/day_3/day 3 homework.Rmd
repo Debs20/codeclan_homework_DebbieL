@@ -1,0 +1,298 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+code to install and load dataset packages
+
+```{r}
+install.packages("devtools")
+```
+
+```{r}
+devtools::install_github('codeclan/CodeClanData')
+
+```
+
+```{r}
+library(CodeClanData)
+```
+
+```{r}
+beer
+```
+
+
+```{r}
+class(beer)
+```
+
+```{r}
+str(beer)
+```
+
+The variable calories is character type and should be numeric.
+
+SOLUTION
+
+```{r}
+beer$calories <- as.numeric(beer$calories)
+```
+
+
+what are the mean values of all the numeric variables
+```{r}
+beer[ ,3:5]
+#this shows the last 3 columns.
+```
+
+
+```{r}
+max(beer[ ,3])
+
+#maximum of percentage column
+```
+
+```{r}
+min(beer[ ,3])
+
+#minimum of percentage column
+```
+
+```{r}
+mean(beer[ ,3])
+#average percentage
+```
+
+```{r}
+mean(beer[ ,5])
+#avenage carb
+```
+
+
+SOLUTION
+
+```{r}
+mean(beer$percent)
+```
+
+```{r}
+
+mean(beer$calories)
+
+```
+
+
+```{r}
+
+mean(beer$carbohydrates)
+```
+
+
+Do the mean calories for high, medium and low alcohol beers differ significantly?
+
+```{r}
+low_alcohol <- subset(beer, percent < 2)
+medium_alcohol <- subset(beer, percent >= 2 & percent < 5)
+high_alcohol <- subset(beer, percent >= 5)
+
+mean(low_alcohol$calories)
+
+```
+
+```{r}
+mean(medium_alcohol$calories)
+```
+
+```{r}
+mean(high_alcohol$calories)
+```
+
+Which beer has the highest percent?
+
+```{r}
+subset(beer, percent == max(percent))
+```
+
+Which beer has the highest calories?
+
+```{r}
+subset(beer, calories == max(calories))
+```
+
+
+```{r}
+temp_data_b$brand
+#this is all the bramds showing
+```
+
+```{r}
+temp_data_b[ , 1:2]
+```
+
+```{r}
+temp_data_b[ ,-4]
+#everything except the calories
+```
+
+```{r}
+temp_data_b[ 3 < 6]
+```
+
+
+```{r}
+sum(temp_data_t)
+#adds up all elements 
+```
+
+```{r}
+mean(temp_data_t)
+
+#average of temp
+```
+
+```{r}
+str(temp_data_t)
+```
+1.2 TEMPERATURE
+
+SOLUTION
+
+What was the average maximum temperature for each month?
+
+```{r}
+colMeans(temp)
+```
+
+
+What was the average maximum monthly temperature for each year?
+
+```{r}
+rowMeans(temp)
+```
+
+What was the highest maximum monthly temperature recorded?
+
+```{r}
+max(temp)
+```
+
+In how many months was the maximum recorded temperature greater than 20?
+
+```{r}
+sum(temp > 20)
+```
+
+```{r}
+# or
+length(temp[temp > 20])
+```
+
+1.3 GAME OF THRONES
+
+```{r}
+game_of_thrones
+```
+
+
+
+```{r}
+temp_data_b <- CodeClanData::beer
+```
+
+
+```{r}
+temp_data_t <- CodeClanData::temp
+```
+
+```{r}
+str(temp_data)
+#this shows the structure of the gane of thrones package
+```
+
+```{r}
+str(temp_data_b)
+#this shows the structure of the beed df
+```
+
+```{r}
+str(temp_data_t)
+#the structre of the temperature dataset
+```
+
+SOLUTION
+
+How many characters are there in the book?
+
+```{r}
+length(game_of_thrones$characters)
+
+```
+
+How many pages are there in the book?
+
+```{r}
+game_of_thrones$numberOfPages
+```
+
+What are the full details for Robb Stark
+
+```{r}
+game_of_thrones$characters[[397]]
+
+```
+
+2. EXTENSION
+
+2.1 BEER
+
+Plot how calories varies with percent
+
+```{r}
+plot(beer$percent, beer$calories)
+```
+
+Plot how calories varies with carbohydrates
+
+```{r}
+plot(beer$percent, beer$carbohydrates)
+```
+
+[Harder] Summarise the beers produced by each brewery.
+
+```{r}
+numeric_beer <- beer[, 3:5]
+numeric_beer <- na.omit(numeric_beer)
+by(numeric_beer, beer$brewer, summary)
+
+```
+
+2.2 TEMPERATURE
+
+Plot the average maximum temperature for each year
+
+```{r}
+plot(rowMeans(temp))
+
+```
+
+
+Plot a histogram showing the spread of temperatures
+
+```{r}
+hist(temp)
+```
+
+2.3 GAME OF THRONES
+
+[Harder] Make a bar plot showing the distribution of gender for all characters.
+
+```{r}
+# unlisting using base R tools is pretty annoying, but we can do something like this
+chars <- game_of_thrones$characters
+chars_df <- as.data.frame(matrix(unlist(chars), nrow = length(chars), byrow = TRUE))
+names(chars_df) <- c("Name", "Gender")
+
+barplot(table(chars_df$Gender))
+```
+

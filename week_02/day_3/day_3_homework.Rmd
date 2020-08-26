@@ -29,6 +29,16 @@ WHERE department = 'Human Resources'
 -- this iwll return list of mployees in HE department
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT * 
+FROM employees
+WHERE department = 'Human Resources'
+
+```
+
+
 Get the first name, last name, and country of the employees who work in the ‘Legal’ department
 
 
@@ -45,6 +55,19 @@ WHERE department = 'Legal'
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  first_name, 
+  last_name, 
+  country 
+FROM employees
+WHERE department = 'Legal'
+
+```
+
+
 Count the number of employees based in Portugal.
 
 
@@ -59,6 +82,17 @@ WHERE country = 'Portugal'
 
 ```
 
+
+SOLUTION
+
+```{sql connection=db_connect}
+
+SELECT 
+  COUNT(id)
+FROM employees
+WHERE country = 'Portugal'
+```
+
 Count the number of employees based in either Portugal or Spain.
 
 ```{sql connection=db_connect}
@@ -70,6 +104,17 @@ FROM employees
 WHERE country IN ('Spain', 'Portugal')
 
 ```
+
+
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id)
+FROM employees
+WHERE country IN ('Portugal', 'Spain')
+```
+
 
 Count the number of pay_details records lacking a local_account_no 
 
@@ -94,6 +139,15 @@ WHERE local_account_no is NULL
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id)
+FROM pay_details
+WHERE local_account_no IS NULL
+```
+
 
 ```{r}
 
@@ -116,6 +170,15 @@ WHERE local_account_no iS NULL and Iban IS NULL
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id)
+FROM pay_details
+WHERE local_account_no IS NULL AND iban IS NULL
+-- count is zero, so no
+```
 
 Get a list of employees first names and last names ordered alphabetically by their last name (put any nulls last).
 
@@ -130,6 +193,17 @@ FROM employees
 ORDER BY last_name ASC NULLS LAST
 
 ```
+
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  first_name, 
+  last_name
+FROM employees
+ORDER BY last_name ASC NULLS LAST
+```
+
 
 Get a list of employees first names, last names and countries, ordered alphabetically first by their country and second by their last name (put any nulls last).
 
@@ -147,6 +221,19 @@ ORDER BY country, last_name ASC NULLS LAST
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  first_name, 
+  last_name, 
+  country
+FROM employees
+ORDER BY country ASC NULLS LAST, last_name ASC NULLS LAST
+```
+
+
+
 Find the top ten highest paid employees in the corporation.
 
 ```{sql connection=db_connect}
@@ -162,6 +249,17 @@ LIMIT 10
 
 
 ```
+
+SOLUTION
+
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+ORDER BY salary DESC NULLS LAST
+LIMIT 10
+```
+
 
 Find the first name, last name and salary of the lowest paid of the employees in Hungary
 
@@ -180,6 +278,19 @@ ORDER BY salary ASC NULLS LAST
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  first_name, 
+  last_name, 
+  salary
+FROM employees
+WHERE country = 'Hungary'
+ORDER BY salary ASC NULLS LAST
+LIMIT 1
+```
+
 How many employees have a first name beginning with ‘F’?
 
 ```{sql connection=db_connect}
@@ -193,6 +304,16 @@ WHERE first_name LIKE '%F%'
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id)
+FROM employees
+WHERE first_name ILIKE 'F%'
+```
+
+
 Find all the details of any employees with a ‘yahoo’ e-mail address?
 
 ```{sql connection=db_connect}
@@ -201,6 +322,14 @@ SELECT *
 FROM employees
 WHERE email LIKE ('%yahoo%')
 
+```
+
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+WHERE email ILIKE '%yahoo%'
 ```
 
 
@@ -216,6 +345,17 @@ FROM employees
 WHERE pension_enrol = TRUE AND country NOT IN ('France', 'Germany')
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id)
+FROM employees
+WHERE pension_enrol IS TRUE AND country NOT IN ('France', 'Germany')
+
+```
+
+
 Breakdown the numbers of employees enrolled, not enrolled and whose enrollment status is unknown in the corporation pension scheme.
 
 ```{sql connection=db_connect}
@@ -228,6 +368,17 @@ GROUP BY pension_enrol
 
 ```
 
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  pension_enrol, 
+  COUNT(id)
+FROM employees
+GROUP BY pension_enrol
+```
+
+
 What is the maximum salary among employees in the Engineering department who work 1.0 full-time equivalent hours?
 
 ```{sql connection=db_connect}
@@ -236,6 +387,15 @@ What is the maximum salary among employees in the Engineering department who wor
 SELECT 
   MAX (salary) AS max_salary
 FROM employees 
+WHERE department = 'Engineering' AND fte_hours = 1.0
+```
+
+SOLUTION
+
+```{sql connection=db_connect}
+SELECT 
+  MAX(salary)
+FROM employees
 WHERE department = 'Engineering' AND fte_hours = 1.0
 ```
 
@@ -252,11 +412,15 @@ GROUP BY department
 
 ```
 
-
+SOLUTION
 
 ```{sql connection=db_connect}
-
-
+SELECT 
+  department, 
+  COUNT(id) AS num_employees
+FROM employees
+WHERE start_date BETWEEN '2003-01-01' AND '2003-12-31'
+GROUP BY department
 
 ```
 

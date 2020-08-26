@@ -141,6 +141,18 @@ prob_one_roll<- nrow(less_than_five) / nrow(one_roll)
 prob_one_roll
 ```
 
+SOLUTION
+
+```{r}
+S <- rolldie(1)
+S_less_5 <- S %>%
+  filter(X1 < 5)
+
+prob <- nrow(S_less_5) / nrow(S)
+prob
+```
+
+
 2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
 
 ```{r}
@@ -346,6 +358,15 @@ prob_perfect_order
 
 Codeclan Solution
 
+```{r}
+# number of ordered arrangements:
+num_outcomes <- factorial(5)
+# only one of these is correctly ordered:
+prob_perfect_order <- 1/num_outcomes
+prob_perfect_order
+```
+
+
 5. I roll six dice:
 
 what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
@@ -386,6 +407,50 @@ prob <- nrow(six_two) / nrow(six)
 [Hint have a look at the isin() function in the prob package. For example, to filter all rows containing 6, 1, 2 in that order, you could use isin(., c(6, 1, 2), ordered = TRUE)]
 
 
+SOLUTION
+
+```{r}
+S <- rolldie(6)
+
+# i. only one outcome has 6, 5, 4, 3, 2, 1 in order so prob
+prob <- 1 / nrow(S)
+prob
+```
+
+
+```{r}
+# or
+S_in_order <- S %>%
+  filter(isin(., c(6, 5, 4, 3, 2, 1), ordered = TRUE))
+prob <- nrow(S_in_order) / nrow(S)
+prob
+```
+
+```{r}
+# or 'mathematically': there are 6^6 outcomes on roll of six dice, of which only one is correct
+prob <- 1 / 6^6
+prob
+
+```
+
+```{r}
+# ii.
+# row must contain 6, 5,..., 1, but can occur in any order
+S_contains_654321 <- S %>%
+  filter(isin(., c(6, 5, 4, 3, 2, 1), ordered = FALSE))
+prob <- nrow(S_contains_654321) / nrow(S)
+prob
+```
+
+```{r}
+# 'mathematically': each outcome has 1/6^6 probability, but now 6, 5,..., 1 can occur in any order without replacement
+# there are 6! orders of six objects without replacement
+# So prob equals 6! times the probability of a single outcome, i.e. 6! / 6^6
+prob <- factorial(6) / 6^6
+prob
+```
+
+
 EXTENSION
 
 6. If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
@@ -417,6 +482,30 @@ prob_spades_given_black <- prob_spades_and_black / prob_black
 prob_spades_given_black
 
 ```
+
+SOLUTION
+
+```{r}
+# this is a conditional probability problem.
+# possible source of confusion here: the conditioning event comes first
+S <- cards(jokers = FALSE)
+
+S <- S %>%
+  mutate(black_card = suit == "Club" | suit == "Spade")
+
+S_spades_and_black <- S %>%
+  filter(black_card == TRUE & suit == "Spade")
+prob_spades_and_black <- nrow(S_spades_and_black) / nrow(S)
+
+S_black <- S %>%
+  filter(black_card == TRUE)
+prob_black <- nrow(S_black) / nrow(S)
+
+prob_spades_given_black <- prob_spades_and_black / prob_black
+prob_spades_given_black
+
+```
+
 
 7. Eight patients: Alice, Bob, Carmen, Dinesh, Ella, Fergus, Gianna and Henry are waiting to see a doctor, but only five appointment slots are left today.
 

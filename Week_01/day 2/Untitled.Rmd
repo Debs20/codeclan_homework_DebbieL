@@ -3,6 +3,10 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+Create a vector called stock_prices with the following data points: 23, 27, 23, 21, 34, 24, 25, 30, 37, 30.
+
+Create a vector called day_of_week, which repeats Monday to Friday twice. i.e. ‘Monday’, ‘Tuesday’, ‘Wednesday’, ‘Thursday’, ‘Friday’, ‘Monday’, ‘Tuesday’, ‘Wednesday’, ‘Thursday’, ‘Friday’.
+
 ```{r}
 stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
 ```
@@ -18,6 +22,16 @@ days_of_the_week
 ```
 
 ```{r}
+stock_prices_2 <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+day_of_week <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+```
+
+
+Create a vector called day_of_week_factor, which has the same data as day_of_week, but is of factor type.
+
+Created a vector called named_stock_prices, which contains the stock prices, named by days of the week.
+
+```{r}
 days_of_the_week_factor <- factor(c(days_of_the_week))
 ```
 ```{r}
@@ -29,14 +43,24 @@ days_of_the_week_factor
 days_of_the_week
 ```
 
-```{r}
-```
-
 
 ```{r}
 named_stock_prices <-c(stock_prices, days_of_the_week)
 ```
 
+Solution
+
+```{r}
+day_of_week_factor <- as.factor(day_of_week)
+```
+
+```{r}
+
+named_stock_prices_2 <- stock_prices_2
+names(named_stock_prices_2) <- day_of_week
+```
+
+Make a data frame called stock_data containing the stock price and day of the week information, and View() the result.
 
 ```{r}
 data.frame(stock_prices, days_of_the_week)
@@ -59,6 +83,20 @@ view(stock_data)
 ```{r}
 View(stock_data)
 ```
+
+Solution
+
+```{r}
+stock_data <- data.frame(stock_prices = stock_prices, day_of_week = day_of_week)
+```
+
+```{r}
+View(stock_data)
+
+```
+
+Make a list called stock_list with named elements as follows: the vector of stock_prices, the vector day_of_week, and the data frame you made in question 3. Choose sensible names for the list elements.
+
 ```{r}
 stock_list <- list(stock_prices, days_of_the_week, stock_data)
 
@@ -70,5 +108,99 @@ stock_prices[[4]][[5]][[6]]
 
 ```{r}
 stock_prices$4$5$
+```
+
+SOLUTION
+
+```{r}
+stock_list <- list(stock_prices = stock_prices, day_of_week = day_of_week, stock_data = stock_data)
+```
+
+In this part, you will practice selecting elements from vectors, data frames, matrices and lists.
+
+Select the 4th, 5th and 6th stock prices from stock_prices.
+
+Select the stock prices greater than 30 from stock_prices.
+
+```{r}
+stock_prices_2 [4:6]
+```
+
+```{r}
+stock_prices_2 [stock_prices_2 > 30]
+```
+
+Select the day_of_week column from the stock_data data frame.
+
+```{r}
+stock_data$day_of_week
+
+```
+
+
+Select the rows of the stock_data data frame where the stock_prices are less than 25.
+
+```{r}
+
+subset(stock_data, stock_prices < 25)
+
+```
+
+Select the 1st column of stock_data.
+
+```{r}
+stock_data[ ,1]
+```
+
+
+Select the 3rd row of stock_data.
+
+```{r}
+stock_data [3,]
+```
+
+
+Select the 3rd element in the 1st column of stock_data.
+
+```{r}
+stock_data [3,1]
+```
+
+Select the data frame from within the list of stocks.
+
+```{r}
+stock_list$stock_data
+
+```
+
+Extension
+
+```{r}
+install.packages("tidyquant")
+```
+
+```{r}
+library(tidyquant)
+```
+
+Use it to get stock prices from a company of your choice from the current year. You’ll need to look up the help file to do this.
+
+```{r}
+google_prices  <- tq_get("GOOGL", get = "stock.prices", from = "2020-01-01")
+
+```
+
+edit the data frame to keep only the date and close columns.
+
+```{r}
+google_prices[ , c("date", "close")]
+
+```
+
+Subset to find the rows at which the close price is higher than average.
+
+```{r}
+
+subset(google_prices, close > mean(close))
 ```
 
