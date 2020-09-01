@@ -1,0 +1,83 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggfortify)
+library(modelr)
+```
+
+
+Load the data into a dataframe project
+
+```{r}
+proj_man <- read_csv("data/project_management.csv")
+```
+
+```{r}
+glimpse(proj_man)
+```
+
+```{r}
+clean_names(proj_man)
+```
+
+
+Plot the data, taking estimated_length as the independent variable and actual_length as the dependent variable.
+
+
+```{r}
+
+proj_man %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point()
+
+```
+
+Label the data points with their row number in the data frame using geom_text() [Hint - you can pass aes(label = 1:nrow(project)) to this layer to generate row index labels]
+Identify by eye any points you think might be outliers and note their labels.
+Further split your outliers into those you think are ‘influential’ or ‘non-influential’ based on a visual assessment of their leverage.
+
+```{r}
+proj_man %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point() +
+  geom_text(aes(label = 1:nrow(proj_man), size = 5))
+
+
+```
+
+I nothe athat number 5 is an outlier as it is so far from the rest of the points on the chart. 
+
+Regress actual_length on estimated_length and confirm your visual assessment of which points are ‘influential’ or ‘non-influential’ outliers based on Cook’s distance. You can get a useful plot of Cook’s distance by passing argument which = 4 to autoplot(). Or try the base R plot() function for comparison [e.g. plot(model)]!
+
+```{r}
+
+model <- lm(estimated_length ~ actual_length, data = proj_man)
+model
+
+```
+
+```{r}
+plot(model, which = 4)
+```
+
+```{r}
+autoplot(model, which = 4)
+```
+
+Obtain the intercept and regression coefficient of variable estimated_length for a simple linear model fitted to data omitting one of your non-influential outlier points.
+How different are the intercept and coefficient from those obtained above by fitting the full data set? Does this support classifying the omitted point as non-influential?
+Plot the data points, this regression line and the regression line for the full data set. How different are the lines?
+
+```{r}
+tidy(model)
+```
+
+```{r}
+autoplot(model)
+```
+
