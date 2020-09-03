@@ -17,7 +17,7 @@ diamonds <- read.csv("/Users/user/codeclan_work/codeclan_homework_DebbieL/week_1
 ```
 
 ```{r}
-diamonds
+glimpse(diamonds)
 ```
 
 The price is in US Dollars, carat being weight of the diamond etc - Clarity- a measure of how clear the diamond is I1-(worst), IF(Best)
@@ -34,6 +34,13 @@ ggpairs(diamonds)
 
 ```
 
+CODECLAN SOLUTION
+
+```{r}
+ggpairs(diamonds[,c("carat", "x", "y", "z")])
+```
+
+
 So, we do find significant correlations. Let’s drop columns x, y and z from the dataset, in preparation to use only carat going forward
 
 ```{r}
@@ -42,6 +49,16 @@ diamonds_trim <- diamonds %>%
 
 diamonds_trim
 ```
+
+CODECLAN SOLUTION
+
+```{r}
+diamonds_tidy <- diamonds %>%
+  select(-c("x", "y", "z"))
+
+diamonds_tidy
+```
+
 
 We are interested in developing a regression model for the price of a diamond in terms of the possible predictor variables in the dataset.
 
@@ -58,12 +75,19 @@ ggpairs(diamonds_trim)
 
 ```
 
+CODECLAN SOLUTION
+
+```{r}
+ggpairs(diamonds_tidy)
+```
+
+carat is strongly correlated with price. Boxplots of price split by cut, color and particularly clarity also show some variation.
 
 Perform further ggplot visualisations of any significant correlations you find.
 
 ```{r}
 diamonds_trim %>%
-  ggplot(aes(x = clarity, y = price, color = cut)) +
+  ggplot(aes(x = clarity, y = price)) +
   geom_point()
 ```
 
@@ -76,9 +100,57 @@ ggPredict(alt_model, interactive = TRUE
 
 ```
 
+CODECLAN SOLUTION
+
+```{r}
+diamonds_tidy %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+diamonds_tidy %>%
+  ggplot(aes(x = cut, y = price)) +
+  geom_boxplot()
+```
+
+```{r}
+diamonds_tidy %>%
+  ggplot(aes(x = color, y = price)) +
+  geom_boxplot()
+```
+
+```{r}
+diamonds_tidy %>%
+  ggplot(aes(x = clarity, y = price)) +
+  geom_boxplot()
+```
+
+
 Shortly we may try a regression fit using one or more of the categorical predictors cut, clarity and color, so let’s investigate these predictors:
 
 Investigate the factor levels of these predictors. How many dummy variables do you expect for each of them?
+
+CODECLAN SOLUTION
+```{r}
+unique(diamonds_tidy$cut)
+
+# expect 4 dummies for cut
+```
+
+```{r}
+# expect 6 dummies for color
+
+unique(diamonds_tidy$color)
+```
+
+```{r}
+# expect 7 dummies for clarity
+
+unique(diamonds_tidy$clarity)
+```
+
 
 Use the dummy_cols() function in the fastDummies package to generate dummies for these predictors and check the number of dummies in each case.
 
@@ -90,8 +162,17 @@ library(fastDummies)
 diamonds_dummy_cut <- diamonds_trim %>%
   fastDummies::dummy_cols(select_columns = "cut", remove_first_dummy = TRUE)
 
-diamonds_dummy_cut
+diamonds_dummy_cut 
 ```
+
+CODECLAN SOLUTION
+
+```{r}
+diamonds_dummies <- dummy_cols(diamonds, select_columns = c("cut", "clarity", "color"), remove_first_dummy = TRUE)
+glimpse(diamonds_dummies)
+
+```
+
 
 ```{r}
 
@@ -104,7 +185,7 @@ diamonds_dummy_clarity
 
 ```{r}
 diamonds_dummy_color <- diamonds_trim %>%
-  fastDummies::dummy_cols(select_columns = "color", remove_first_dummy = TRUE) 
+  fastDummies::dummy_cols(select_columns = "color", remove_first_dummy = TRUE)
 
 diamonds_dummy_color
 ```
@@ -123,13 +204,128 @@ model_2 <- lm(price ~ carat, data = diamonds_trim)
 summary(model_2)
 ```
 
+CODECLAN SOLUTION
+
+```{r}
+mod1 <- lm(price ~ carat, data = diamonds_tidy)
+par(mfrow = c(2,2))
+plot(mod1)
+
+# the residuals show systematic variation, significant deviation from normality and heteroscedasticity. Oh dear...
+```
+
+
 ```{r}
 autoplot(model_2)
 ```
 
 Run a regression with one or both of the predictor and response variables log() transformed and recheck the diagnostics. Do you see any improvement?
 
+CODELCAN SOLUTION
+
+```{r}
+mod2_logx <- lm(price ~ log(carat), data = diamonds_tidy)
+par(mfrow = c(2,2))
+plot(mod2_logx)
+```
+
+
+```{r}
+mod2_logy <- lm(log(price) ~ carat, data = diamonds_tidy)
+par(mfrow = c(2,2))
+plot(mod2_logy)
+```
+
+```{r}
+mod2_logxlogy <- lm(log(price) ~ log(carat), data = diamonds_tidy)
+par(mfrow = c(2,2))
+plot(mod2_logxlogy)
+
+```
+
+```{r}
+# it looks like log transformation of both variables is required to get close to satisfying the regression assumptions.
+```
+
 
 Let’s use log() transformations of both predictor and response. Next, experiment with adding a single categorical predictor into the model. Which categorical predictor is best? [Hint - investigate r2 values]
 
+CODECLAN SOLUTION
+
+```{r}
+mod3_cut <- lm(log(price) ~ log(carat) + cut, data = diamonds_tidy)
+summary(mod3_cut)
+```
+
+```{r}
+mod3_color <- lm(log(price) ~ log(carat) + color, data = diamonds_tidy)
+summary(mod3_color)
+```
+
+```{r}
+mod3_clarity <- lm(log(price) ~ log(carat) + clarity, data = diamonds_tidy)
+summary(mod3_clarity)
+```
+
+# clarity leads to a model with highest r^2, all predictors are significant
+
 [Try this question if you have looked at the material on transformations] Interpret the fitted coefficients for the levels of your chosen categorical predictor. Which level is the reference level? Which level shows the greatest difference in price from the reference level? [Hints - remember we are regressing the log(price) here, and think about what the presence of the log(carat) predictor implies. We’re not expecting a mathematical explanation]
+
+COEDLCNA SOLUTOIN
+
+```{r}
+# 'I1' is the reference level for clarity. In multiple linear regression, the interpretation of any 
+# coefficient is the change in response due to that predictor with other predictors held constant
+# log(price) makes the relationship geometric. Clarity = 'IF' shows the most difference from the reference level.
+
+# Here's how to interpret the `clarityIF` coefficient in the presence of the `log(price)` response
+
+ratio <- exp(1.114625)
+ratio
+```
+
+```{r}
+# so, on average, the price of an IF diamond will be approx. 3 times higher than that of I1 diamond of same carat
+```
+
+EXTENSION
+
+Try adding an interaction between log(carat) and your chosen categorical predictor. Do you think this interaction term is statistically justified?
+
+CODECLAN SOLUTION
+
+```{r}
+mod4_clarity_inter <- lm(log(price) ~ log(carat) + clarity + log(carat):clarity, data = diamonds_tidy)
+summary(mod4_clarity_inter)
+
+```
+
+```{r}
+# obtain only a small improvement in r^2 from the interaction. 
+# we'll see shortly that the correct test would be an anova() comparing both models
+anova(mod3_clarity, mod4_clarity_inter)
+```
+
+# the small p-value suggests interaction is statistically significant, but the effect is small
+
+Find and plot an appropriate visualisation to show the effect of this interaction
+
+CODECLAN SOLUTION
+
+```{r}
+diamonds_tidy %>%
+  ggplot(aes(x = log(carat), y = log(price), colour = clarity)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ clarity)
+```
+
+```{r}
+# not much evidence that the gradient of the line varies significantly with clarity
+
+```
+
+
+EXPLANATION- RESIDUAL STANDARD ERROR AND R SQUARED IS MORE IMPORTANT
+
+FOR PREDICTION- INTERESTED IN RESIDUAL STANDARD ERROR ALONE
