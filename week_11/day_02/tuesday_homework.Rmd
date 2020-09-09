@@ -1,0 +1,19 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+SUPPORT VECTOR MACHINE
+
+A Support Vector Machine (SVM) is a supervised machine learning algorithm that can be employed for both classification and regression purposes. SVMs are more commonly used in classification problems and as such. SVMs are based on the idea of finding a hyperplane that best divides a dataset into two. 
+ 
+Support vectors are the data points nearest to the hyperplane, the points of a data set that, if removed, would alter the position of the dividing hyperplane. Because of this, they can be considered the critical elements of a data set.
+
+What is a hyperplane?
+ 
+As a simple example, for a classification task with only two features , you can think of a hyperplane as a line that linearly separates and classifies a set of data. The further from the hyperplane our data points lie, the more confident we are that they have been correctly classified. Therefore we want the data points to be as far away from the hyperplane as possible, while still being on the correct side of it.
+
+So when new testing data is added, whatever side of the hyperplane it lands will decide the class that we assign to it.
+
+https://chrisjmccormick.files.wordpress.com/2013/04/trivialdataset_supportvectors.png
+
