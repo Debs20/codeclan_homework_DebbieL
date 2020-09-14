@@ -165,3 +165,136 @@ library(caret)
 confusionMatrix(titanic_test_pred$pred, titanic_test_pred$survived_flag) 
 ```
 
+
+CODECLAN_SOLUTION
+
+```{r}
+titanic_clean_1 <- titanic_set %>%
+  filter(survived %in% c(0,1)) %>%
+# Convert to factor level
+    mutate(sex = as.factor(sex), 
+           age_status = as.factor(if_else(age <= 16, "child", "adult")),
+         class = factor(pclass, levels = c(3,2,1), labels = c("Lower", "Middle", "Upper")), 
+           survived_flag = factor(survived, levels = c(0,1), labels = c("dies", "survived")), 
+           port_embarkation = as.factor(embarked)) %>%
+  select(sex, age_status, class, port_embarkation, sib_sp, parch, survived_flag) %>%
+  na.omit()
+
+```
+
+
+```{r}
+titanic_clean_1 %>%
+  select(survived_flag, sex) %>%
+  group_by(survived_flag,sex) %>%
+  summarise(total_count = n()) %>%
+ggplot() + 
+  aes(x = survived_flag, y = total_count, fill = sex) + 
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette="Dark2") + 
+  ylab("total count") + xlab("survived")
+
+```
+
+
+```{r}
+titanic_clean_1 %>%
+  select(survived_flag, class) %>%
+  group_by(survived_flag,class) %>%
+  summarise(total_count = n()) %>%
+ggplot() + 
+  aes(x = survived_flag, y = total_count, fill = class) + 
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette="Dark2") + 
+  ylab("total count") + xlab("survived")
+```
+
+```{r}
+titanic_clean_1 %>%
+  select(survived_flag, age_status) %>%
+  group_by(survived_flag,age_status) %>%
+  summarise(total_count = n()) %>%
+ggplot() + 
+  aes(x = survived_flag, y = total_count, fill = age_status) + 
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette="Dark2") + 
+  ylab("total count") + xlab("survived")
+```
+
+```{r}
+titanic_clean_1 %>%
+  select(survived_flag, port_embarkation) %>%
+  group_by(survived_flag,port_embarkation) %>%
+  summarise(total_count = n()) %>%
+ggplot() + 
+  aes(x = survived_flag, y = total_count, fill = port_embarkation) + 
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette="Dark2") + 
+  ylab("total count") + xlab("survived")
+```
+
+```{r}
+# set the random seed number: ONLY INSTRUCTORS - students SHOULD NOT do this in their homework 
+set.seed(3)
+
+n_data_1 <- nrow(titanic_clean_1)
+
+# create a test sample index
+test_index_1 <- sample(1:n_data, size = n_data*0.2)
+
+# create test set
+titanic_test_1  <- slice(titanic_clean_1, test_index)
+
+# create training set
+titanic_train_1 <- slice(titanic_clean_1, -test_index)
+
+# check balanced sets
+titanic_test_1 %>%
+ janitor::tabyl(survived_flag)
+```
+
+```{r}
+titanic_train_1 %>%
+  janitor::tabyl(survived_flag)
+
+```
+
+
+```{r}
+titanic_fit_1 <- rpart(survived_flag ~ ., 
+                     data = titanic_train_1, 
+                     method = 'class')
+
+rpart.plot(titanic_fit_1, yesno = 2)
+```
+
+```{r}
+library(modelr)
+library(yardstick)
+```
+
+```{r}
+# add the predictions
+titanic_test_pred_1 <- titanic_test_1 %>%
+                 add_predictions(titanic_fit_1, type = 'class')
+
+
+conf_mat <- titanic_test_pred_1 %>%
+              conf_mat(truth = survived_flag, estimate = pred)
+
+conf_mat
+```
+
+EXTENSION
+
+```{r}
+control <- rpart.control(minsplit = 4,
+    minbucket = round(5 / 3),
+    maxdepth = 3,
+    cp = 0)
+
+tune_fit <- rpart(survived_flag ~., data = titanic_train, method = 'class', control = control)
+
+rpart.plot(tune_fit, yesno = 2)
+```
+
