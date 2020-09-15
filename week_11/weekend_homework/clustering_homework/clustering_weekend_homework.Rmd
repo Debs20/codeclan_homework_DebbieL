@@ -164,3 +164,58 @@ Do you think the clustering seems a good fit for this data?
 Comment on the attributes on one or two of the clusters (maybe even give them a label if you like - like in section 4.1 of the ‘Segmentation & clustering intro’ lesson).
 
 # The clusters shouw quite a close spread of the clustered data the purple cluster is very close clsutered.
+
+CODECLAN SOLUTION
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+```{r}
+customer_data %>%
+  group_by(gender) %>%
+  summarise(count = n()) %>%
+ggplot(aes(x = gender, y = count)) +
+  geom_col()
+```
+
+```{r}
+ggplot(customer, aes(x = annual_income_k, y = spending_score_1_100)) +
+  geom_point()
+```
+
+```{r}
+ggplot(customer, aes(x = annual_income_k)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(customer, aes(x = spending_score_1_100)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(customer_data, aes(x = age)) +
+  geom_histogram(bins = 50)
+```
+
+```{r}
+customers_scale_1 <- customer %>% 
+  select(annual_income_k, spending_score_1_100) %>%
+    mutate_all(scale)
+
+summary(customers_scale_1)
+```
+
+```{r}
+ggplot(customers_scale_1, aes(x = annual_income_k, y = spending_score_1_100)) +
+  geom_point()
+```
+
+```{r}
+customer_clusters_k5 <- k_clusters %>% 
+  unnest(cols = c(augmented)) %>%
+  filter(k == 5) 
+```
+
