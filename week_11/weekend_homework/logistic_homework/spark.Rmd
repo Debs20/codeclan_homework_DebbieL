@@ -1,0 +1,19 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+install.packages("sparklyr")
+```
+
+i
+```{r}
+library(sparklyr)
+spark_install(version = "2.4.5")
+```
+
+```{r}
+sc <-spark_connect(master = "local")
+spark_cars <-copy_to(sc, mtcars)
+```
+
